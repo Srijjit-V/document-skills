@@ -1,0 +1,189 @@
+<title>Plain AI vs clean-docs</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Literata:opsz,wght@7..72,500;7..72,700&family=Public+Sans:wght@400;600&family=JetBrains+Mono:wght@400;600&display=swap">
+<style>
+/* Layout: one reading column (~70ch) with full-width comparison grids that stack on phones. */
+:root {
+  --bg: #f7f8f6; --surface: #ffffff; --fg: #1d2421; --muted: #5d6762; --rule: #d9dedb;
+  --plain: #9a5b13; --plain-bg: #fbf1e4; --skill: #0f6e5c; --skill-bg: #e5f3ef; --bad: #a3322a; --bad-bg: #fbeceb;
+  --code-bg: #eef1ef;
+  --f-display: "Literata", Georgia, "Times New Roman", serif;
+  --f-body: "Public Sans", -apple-system, "Segoe UI", Helvetica, Arial, sans-serif;
+  --f-mono: "JetBrains Mono", ui-monospace, Menlo, Consolas, monospace;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+  --bg: #141917; --surface: #1c2220; --fg: #e4e9e6; --muted: #9aa5a0; --rule: #2f3835;
+  --plain: #e0a35c; --plain-bg: #2b2217; --skill: #5cc8b1; --skill-bg: #15302a; --bad: #ef8a80; --bad-bg: #36201e;
+  --code-bg: #232b28; color-scheme: dark } }
+:root[data-theme="dark"] {
+  --bg: #141917; --surface: #1c2220; --fg: #e4e9e6; --muted: #9aa5a0; --rule: #2f3835;
+  --plain: #e0a35c; --plain-bg: #2b2217; --skill: #5cc8b1; --skill-bg: #15302a; --bad: #ef8a80; --bad-bg: #36201e;
+  --code-bg: #232b28; color-scheme: dark }
+* { box-sizing: border-box; }
+body { background: var(--bg); color: var(--fg); font: 16px/1.6 var(--f-body); }
+.wrap { max-width: 1080px; margin: 0 auto; padding-block: 40px 72px;
+  padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px));
+  display: grid; gap: 44px; }
+.prose { max-width: 70ch; }
+h1, h2 { font-family: var(--f-display); text-wrap: balance; line-height: 1.2; margin: 0; }
+h1 { font-size: clamp(30px, 5vw, 44px); font-weight: 700; }
+h2 { font-size: 26px; font-weight: 500; margin-bottom: 12px; }
+h3 { font-size: 15px; margin: 0 0 6px; letter-spacing: .04em; text-transform: uppercase; }
+p { margin: 0 0 12px; }
+.lede { font-size: 19px; color: var(--fg); margin-top: 14px; }
+.meta { color: var(--muted); font-size: 14px; }
+code, pre { font-family: var(--f-mono); font-size: 13px; }
+code { background: var(--code-bg); padding: 1px 4px; border-radius: 3px; }
+.tag { display: inline-block; font: 600 12px/1 var(--f-body); letter-spacing: .05em; text-transform: uppercase;
+  padding: 5px 8px; border-radius: 4px; }
+.tag.plain { color: var(--plain); background: var(--plain-bg); }
+.tag.skill { color: var(--skill); background: var(--skill-bg); }
+.two { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+.two > * { min-width: 0; }
+@media (max-width: 760px) { .two { grid-template-columns: 1fr; } }
+figure { margin: 0; display: grid; gap: 10px; }
+figure img { width: 100%; border: 1px solid var(--rule); border-radius: 6px; background: #fff; }
+figcaption { font-size: 14px; color: var(--muted); }
+.tbl { overflow-x: auto; }
+table { border-collapse: collapse; width: 100%; font-size: 15px; font-variant-numeric: tabular-nums; }
+th, td { text-align: left; padding: 9px 12px; border-bottom: 1px solid var(--rule); vertical-align: top; }
+th { font-size: 13px; color: var(--muted); font-weight: 600; }
+td.p { color: var(--plain); } td.s { color: var(--skill); }
+td.win { font-weight: 600; }
+.excerpt { background: var(--surface); border: 1px solid var(--rule); border-radius: 6px; padding: 14px; display: grid; gap: 10px; align-content: start; }
+.excerpt pre { margin: 0; white-space: pre-wrap; overflow-wrap: anywhere; line-height: 1.5; color: var(--fg); }
+.excerpt ul { margin: 0; padding-left: 18px; font-size: 14px; color: var(--muted); }
+.callout { border-left: 4px solid var(--bad); background: var(--bad-bg); padding: 14px 16px; border-radius: 0 6px 6px 0; max-width: 78ch; }
+.callout strong { color: var(--bad); }
+.verdict { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 16px; }
+.verdict div { background: var(--surface); border: 1px solid var(--rule); border-radius: 6px; padding: 16px; }
+.verdict b { display: block; font-family: var(--f-display); font-size: 30px; font-weight: 700; color: var(--skill); line-height: 1.1; }
+.verdict span { font-size: 14px; color: var(--muted); }
+a { color: var(--skill); }
+a:focus-visible { outline: 2px solid var(--skill); outline-offset: 2px; }
+</style>
+
+<div class="wrap">
+
+<header class="prose">
+  <p class="meta">Test run 2026-11-02 · Opus 5.5 subagents · same prompt, with and without the skill</p>
+  <h1>Plain AI vs clean-docs</h1>
+  <p class="lede">The skill makes long docs about half the length and easier to scan. On cheat sheets, the gain is different: readable type, a priority line, and a list of what was cut. Plain AI packs in more by shrinking the font. Neither version was error-free.</p>
+</header>
+
+<section class="verdict" aria-label="Headline numbers">
+  <div><b>−55%</b><span>doc length (2,166 → 983 words, avg of 3 repos)</span></div>
+  <div><b>71 → 100</b><span>lint score: padding, AI vocabulary, over-formatting</span></div>
+  <div><b>8.5pt</b><span>cheat sheet body text with the skill, vs 7.6pt (code 6.3pt) without</span></div>
+  <div><b>12 → 15</b><span>of 15 reader questions answered by the cheat sheets (3 repos)</span></div>
+</section>
+
+<section>
+  <div class="prose">
+    <h2>Cram sheet test: Click</h2>
+    <p>A fresh test on <a href="https://github.com/pallets/click">pallets/click</a> @2247b35, a repo the skill had never seen. Prompt: "Make me a one-page cheat sheet for building CLIs with it, as Markdown and print-ready HTML." Both rendered to exactly one US Letter page.</p>
+  </div>
+  <div class="two">
+    <figure>
+      <span class="tag plain">Plain AI</span>
+      <img src="click-baseline.png" alt="Plain AI Click cheat sheet: dense three-column page with small type, no priority line, short gotchas box at the bottom right." loading="lazy">
+      <figcaption>693 words. Covers more (pager, progress bar, editor, validation callbacks), but body text is 7.6pt and code is 6.3–6.8pt.</figcaption>
+    </figure>
+    <figure>
+      <span class="tag skill">clean-docs</span>
+      <img src="click-skill-v3.png" alt="clean-docs Click cheat sheet: three-column page with a dark 'if you only read one thing' banner, labeled boxes, red gotchas box." loading="lazy">
+      <figcaption>534 words at 8.5pt. Opens with one priority line, explains each gotcha, and reports 8 cut topics with reasons.</figcaption>
+    </figure>
+  </div>
+</section>
+
+<section>
+  <h2>Cram sheet scorecard</h2>
+  <div class="tbl"><table>
+    <thead><tr><th>Measure</th><th>Plain AI</th><th>clean-docs</th></tr></thead>
+    <tbody>
+      <tr><td>Pages (US Letter, headless Chrome)</td><td class="p">1</td><td class="s">1</td></tr>
+      <tr><td>Words</td><td class="p">693</td><td class="s">534</td></tr>
+      <tr><td>Smallest text size</td><td class="p">6.3pt (code blocks)</td><td class="s win">8pt code, 8.5pt body</td></tr>
+      <tr><td>"If you only read one thing" line</td><td class="p">No</td><td class="s win">Yes</td></tr>
+      <tr><td>Gotchas box items</td><td class="p">5</td><td class="s win">7</td></tr>
+      <tr><td>Tells you what was left out</td><td class="p">No</td><td class="s win">8 topics, each with a reason</td></tr>
+      <tr><td>Reader questions answered (5)</td><td class="p">5/5</td><td class="s">5/5</td></tr>
+      <tr><td>Median words read before the answer</td><td class="p win">176</td><td class="s">198</td></tr>
+      <tr><td>Factual errors found in a spot check</td><td class="p">None found (not fully audited)</td><td class="s">2 found by running (see below)</td></tr>
+    </tbody>
+  </table></div>
+  <p class="meta" style="margin-top:10px">"Words read before the answer" is the position of the first text that answers each question, a stand-in for scan time, not a timed human test.</p>
+</section>
+
+<aside class="callout">
+  <p><strong>What the skill got wrong, and what running showed.</strong> The skill sheet's first version listed seven gotchas after reading source only. A later run on Click 8.5.0 found: <code>-dbg</code> works as one option when declared and only splits into <code>-d -b -g</code> when those single letters are the declared options, so the sheet's advice ("use <code>--dbg</code>") was misleading; <code>multiple=True, default="ab"</code> does not give <code>("a","b")</code>, it fails with "Value must be an iterable"; three others held up; two were only in the docs. The skill now requires a run or a test for behavior gotchas, and the sheet in <code>tests/click/skill-v3/</code> has been corrected.</p>
+</aside>
+
+<section>
+  <div class="prose">
+    <h2>Long docs: the first screen</h2>
+    <p>Same prompt on <a href="https://github.com/httpie/cli">httpie/cli</a>: "docs a new developer would use to understand and use this project." This is the top of each doc.</p>
+  </div>
+  <div class="two">
+    <div class="excerpt">
+      <span class="tag plain">Plain AI · 2,544 words</span>
+<pre># HTTPie CLI — Developer Guide
+
+HTTPie (`http` / `https`) is a command-line HTTP client for working with APIs. You type requests in a short, readable syntax, and responses come back formatted and colorized. This guide is for developers who are new to …
+
+- **Version in this checkout:** 3.2.4 …
+- **Language:** Python 3 …
+- **License:** BSD
+- **Built on:** `requests` …
+
+---
+
+## 1. Quick start
+### Run from source</pre>
+      <ul><li>Meta-narration ("This guide is for…"), then a block of bold-label bullets</li><li>29 headers, numbered like a manual</li><li>Basic auth first appears ~1,000 words in</li></ul>
+    </div>
+    <div class="excerpt">
+      <span class="tag skill">clean-docs · 993 words</span>
+<pre># Start here: HTTPie CLI
+
+HTTPie is a command-line HTTP client for talking to APIs: `http` and `https` send a request built from short `key=value` arguments and print a colored, formatted response.
+
+git clone https://github.com/httpie/cli.git && cd cli
+python3 -m venv venv && ./venv/bin/pip install -e '.[dev]'
+./venv/bin/http --offline pie.dev/post name=Ada age:=36
+
+POST /post HTTP/1.1
+Content-Type: application/json
+…
+{"name": "Ada", "age": 36}</pre>
+      <ul><li>A command you can run, plus its real output, within the first 60 words</li><li>7 headers, no bold labels, no em dashes</li><li>Includes a gotcha found by running the tool: piped stdin breaks <code>key=value</code></li></ul>
+    </div>
+  </div>
+</section>
+
+<section>
+  <h2>Key differences</h2>
+  <div class="tbl"><table>
+    <thead><tr><th>Behavior</th><th>Plain AI</th><th>clean-docs</th></tr></thead>
+    <tbody>
+      <tr><td>Length</td><td class="p">1,800–2,500 words per doc</td><td class="s">810–1,000, set by a budget picked up front</td></tr>
+      <tr><td>Opening</td><td class="p">Title, intro, metadata bullets, then content</td><td class="s">What it is in one sentence, then a runnable example</td></tr>
+      <tr><td>Structure</td><td class="p">20–29 numbered headers per doc</td><td class="s">6–8 headers, one per real section</td></tr>
+      <tr><td>AI tells</td><td class="p">6–21 em dashes per doc, bold labels, horizontal rules</td><td class="s">None flagged by the linter</td></tr>
+      <tr><td>Running the code</td><td class="p">Not done</td><td class="s">Installed and ran it when possible; found 4 gotchas the plain docs lack</td></tr>
+      <tr><td>Cheat sheet that doesn't fit</td><td class="p">Shrinks the font</td><td class="s">Cuts low-priority content and lists the cuts</td></tr>
+      <tr><td>Accuracy</td><td class="p">Not audited line by line</td><td class="s">Better when it can run code; 1 wrong claim when it couldn't</td></tr>
+    </tbody>
+  </table></div>
+</section>
+
+<section class="prose">
+  <h2>Where plain AI held its own</h2>
+  <p>Opus 5.5 without the skill writes correct, organized docs. Its cheat sheets were good in every test: one page, sensible sections, and on Click it found answers slightly sooner because it covered more. The skill doesn't turn bad docs into good ones. It turns long, generic docs into short ones aimed at one reader, and it prevents the tiny-font cheat sheet.</p>
+  <p class="meta">Repos: itsdangerous @672971d, httpie/cli @5b604c3, scrapy @e397746, click @2247b35. Full numbers and every before/after file: <code>tests/results.md</code> in the project folder.</p>
+</section>
+
+</div>

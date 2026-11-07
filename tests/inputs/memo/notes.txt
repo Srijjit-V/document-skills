@@ -1,0 +1,13 @@
+notes for carrier memo (me = Sam Okafor, fulfillment manager at Lakeside Outfitters). going to Dana Whitfield, VP Operations. today is Oct 28 2026
+
+- we ship about 1,150 parcels a month, all domestic
+- SwiftShip (current) avg cost per parcel $8.40. NorthRoute quote came back at $6.95 avg
+- NorthRoute pickup cutoff is 3pm. SwiftShip's is 5pm. this is the problem, orders 3-5pm would go out next day
+- idea: move our packing cutoff to 2:30pm so we still hand off by 3
+- NorthRoute doesn't serve Alaska or Hawaii. those are 2.1% of our orders, would stay on SwiftShip
+- NorthRoute's sales sheet says damage claims rate 1.1%. SwiftShip's we measured last year 0.8%. NorthRoute number is THEIR number, not verified
+- SwiftShip contract: 30 days notice to cancel, no fee
+- want to do a 60 day pilot starting Jan 6, 2027. not switch everything, just domestic lower 48
+- need Dana to approve by Nov 15 so we can give notice and set up the account
+- savings at current volume: (8.40 - 6.95) x 1,150, around $1,667 a month. if the damage rate is really higher that could eat some of it
+- also customers like next day, last year we got 14 complaints about late shipping total (that was SwiftShip)

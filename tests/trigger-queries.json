@@ -1,0 +1,154 @@
+[
+ {
+  "q": "Can you write my report on the Q3 sales numbers? I've pasted the spreadsheet.",
+  "primary": "clean-docs",
+  "also_ok": []
+ },
+ {
+  "q": "help me draft an email to my landlord about the broken heater",
+  "primary": "clean-docs",
+  "also_ok": []
+ },
+ {
+  "q": "this paragraph sounds like ChatGPT wrote it, can you make it sound normal?",
+  "primary": "clean-docs",
+  "also_ok": []
+ },
+ {
+  "q": "write a cover letter for this job posting, here's my background",
+  "primary": "clean-docs",
+  "also_ok": [
+   "polished-docs"
+  ]
+ },
+ {
+  "q": "tighten up my essay, it's way too long",
+  "primary": "clean-docs",
+  "also_ok": []
+ },
+ {
+  "q": "turn my rough notes from the call into a memo for my boss",
+  "primary": "clean-docs",
+  "also_ok": [
+   "polished-docs"
+  ]
+ },
+ {
+  "q": "write the README for my script",
+  "primary": "clean-docs",
+  "also_ok": []
+ },
+ {
+  "q": "proofread my resume and cut it down to what matters",
+  "primary": "clean-docs",
+  "also_ok": [
+   "polished-docs"
+  ]
+ },
+ {
+  "q": "make this look professional",
+  "primary": "polished-docs",
+  "also_ok": []
+ },
+ {
+  "q": "format my paper in APA",
+  "primary": "polished-docs",
+  "also_ok": []
+ },
+ {
+  "q": "turn this into a PDF",
+  "primary": "polished-docs",
+  "also_ok": []
+ },
+ {
+  "q": "clean up this Google Doc, the spacing is all weird",
+  "primary": "polished-docs",
+  "also_ok": []
+ },
+ {
+  "q": "I pasted from ChatGPT into Docs and now there are ## and ** everywhere",
+  "primary": "polished-docs",
+  "also_ok": []
+ },
+ {
+  "q": "put this resume on one page in a clean layout",
+  "primary": "polished-docs",
+  "also_ok": [
+   "clean-docs"
+  ]
+ },
+ {
+  "q": "export this report as a nicely formatted PDF with page numbers",
+  "primary": "polished-docs",
+  "also_ok": []
+ },
+ {
+  "q": "my letter looks off, the address block is all on one line",
+  "primary": "polished-docs",
+  "also_ok": []
+ },
+ {
+  "q": "make a study sheet for my bio exam from these notes",
+  "primary": "cram-sheet",
+  "also_ok": [
+   "clean-docs"
+  ]
+ },
+ {
+  "q": "I need a cheat sheet for this library",
+  "primary": "cram-sheet",
+  "also_ok": []
+ },
+ {
+  "q": "fit this policy on one page",
+  "primary": "cram-sheet",
+  "also_ok": []
+ },
+ {
+  "q": "make a one-pager I can print for tomorrow's meeting",
+  "primary": "cram-sheet",
+  "also_ok": [
+   "polished-docs"
+  ]
+ },
+ {
+  "q": "condense this chapter into a quick reference",
+  "primary": "cram-sheet",
+  "also_ok": []
+ },
+ {
+  "q": "cram sheet for the French Revolution",
+  "primary": "cram-sheet",
+  "also_ok": []
+ },
+ {
+  "q": "write a Python function that reverses a linked list",
+  "primary": "none",
+  "also_ok": []
+ },
+ {
+  "q": "what's the capital of Australia?",
+  "primary": "none",
+  "also_ok": []
+ },
+ {
+  "q": "fix this bug in my React component",
+  "primary": "none",
+  "also_ok": []
+ },
+ {
+  "q": "create a slide deck for my sales pitch",
+  "primary": "none",
+  "also_ok": []
+ },
+ {
+  "q": "translate this paragraph into Spanish",
+  "primary": "none",
+  "also_ok": []
+ },
+ {
+  "q": "plan my trip to Lisbon",
+  "primary": "none",
+  "also_ok": []
+ }
+]

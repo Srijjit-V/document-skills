@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>HTTPie cram sheet</title>
+<style>
+@page { size: letter; margin: 0.4in; }
+:root { --ink:#111; --muted:#555; --rule:#bbb; --accent:#0b5cad; --warn:#a33; --box:#f6f7f9; }
+* { box-sizing: border-box; }
+body { font: 8.5pt/1.3 -apple-system, "Segoe UI", Helvetica, Arial, sans-serif; color: var(--ink);
+       background:#fff; margin: 0; }
+.sheet { max-width: 7.7in; margin: 0 auto; }
+header { display:flex; align-items: baseline; justify-content: space-between;
+         border-bottom: 2px solid var(--ink); margin-bottom: 4pt; }
+h1 { font-size: 15pt; margin: 0 0 2pt; }
+.meta { color: var(--muted); font-size: 8pt; }
+.one { background: var(--ink); color:#fff; padding: 4pt 6pt; margin: 0 0 3pt; font-size: 9.5pt; border-radius: 3pt; }
+.one strong { color: #ffd84d; }
+.legend { color: var(--muted); font-size: 8pt; margin: 0 0 5pt; }
+.cols { column-count: var(--cols); column-gap: 8pt; }
+section { break-inside: avoid; background: var(--box); border: 1px solid var(--rule);
+          border-radius: 3pt; padding: 3pt 5pt 4pt; margin: 0 0 6pt; }
+section.gotchas { border-color: var(--warn); background: #fff6f5; }
+h2 { font-size: 9.5pt; margin: 0 0 2pt; color: var(--accent); text-transform: uppercase; letter-spacing: .03em; }
+section.gotchas h2 { color: var(--warn); }
+h3 { font-size: 8.5pt; margin: 3pt 0 1pt; }
+p { margin: 1pt 0 2pt; }
+ul, ol { margin: 1pt 0 2pt; padding-left: 11pt; }
+li { margin: 0 0 1pt; }
+table { border-collapse: collapse; width: 100%; margin: 1pt 0 2pt; }
+th, td { text-align: left; vertical-align: top; padding: 1pt 3pt; border-bottom: 1px solid #ddd; }
+th { font-size: 8pt; color: var(--muted); font-weight: 600; }
+code { font: 8pt/1.25 ui-monospace, Menlo, Consolas, monospace; background:#e9ecf0; padding: 0 2pt; border-radius: 2pt; }
+pre { background:#e9ecf0; padding: 2pt 4pt; margin: 1pt 0 2pt; white-space: pre-wrap; border-radius: 2pt; }
+pre code { background: none; padding: 0; }
+a { color: var(--accent); text-decoration: none; }
+footer { color: var(--muted); font-size: 7.5pt; border-top: 1px solid var(--rule); margin-top: 2pt; padding-top: 2pt; }
+@media screen { body { background:#e5e5e5; } .sheet { background:#fff; padding: .4in; margin: 16px auto;
+  box-shadow: 0 1px 4px rgba(0,0,0,.2); } }
+@media screen and (max-width: 700px) { .cols { column-count: 1; } .sheet { padding: 16px; } }
+</style></head>
+<body><div class="sheet" style="--cols:3">
+<header><h1>HTTPie cram sheet</h1><span class="meta">httpie/cli@3.2.4 (commit 5b604c3) · 2026-11-02</span></header>
+<p class="one"><strong>If you only read one thing:</strong> in scripts and CI always pass --ignore-stdin. Otherwise piped stdin becomes the request body and key=value items fail with "cannot be mixed".</p>
+<p class="legend">Legend: ★ most used · ⚠ gotcha</p>
+<div class="cols">
+<section><h2>Request items</h2>
+<table><tr><th>Item</th><th>Sends</th></tr><tr><td><code>name=Ada</code> ★</td><td>JSON string (form with <code>-f</code>)</td></tr><tr><td><code>age:=36</code> ★</td><td>raw JSON: number, bool, list</td></tr><tr><td><code>X-Token:abc</code> ★</td><td>header; <code>Accept:</code> removes it</td></tr><tr><td><code>q==1</code></td><td>query param <code>?q=1</code></td></tr><tr><td><code>cv@./cv.pdf</code></td><td>multipart file upload</td></tr><tr><td><code>body:=@data.json</code></td><td>JSON field from file</td></tr><tr><td><code>'user[roles][]=admin'</code></td><td>nested JSON</td></tr></table></section>
+<section><h2>Daily commands</h2>
+<table><tr><th>Command</th><th>Does</th></tr><tr><td><code>http :3000/api</code> ★</td><td>GET localhost:3000</td></tr><tr><td><code>http POST api.io/u name=Ada</code></td><td>JSON POST</td></tr><tr><td><code>http -v URL</code> ★</td><td>show request + response</td></tr><tr><td><code>http --offline URL a=1</code></td><td>print request, don't send</td></tr><tr><td><code>http -f POST URL a=1</code></td><td>form-encoded</td></tr><tr><td><code>http -d URL</code></td><td>download to file</td></tr><tr><td><code>https example.org</code></td><td>default scheme https</td></tr></table></section>
+<section><h2>Output (-p / --print)</h2>
+<table><tr><th>Letter</th><th>Prints</th></tr><tr><td><code>H</code> / <code>B</code></td><td>request headers / body</td></tr><tr><td><code>h</code> / <code>b</code></td><td>response headers / body</td></tr><tr><td><code>m</code></td><td>response metadata (timing)</td></tr></table>
+<p>Default on a terminal: <code>hb</code>. Piped: <code>b</code>. <code>--offline</code>: <code>HB</code>.</p></section>
+<section><h2>Auth, redirects, sessions</h2>
+<ul><li><code>-a user:pass</code> basic; <code>-a user</code> prompts for password</li><li><code>-A bearer -a TOKEN</code> → <code>Authorization: Bearer TOKEN</code></li><li><code>-F</code> follow redirects (off by default, max 30)</li><li><code>--session=dev</code> saves headers, auth, cookies per host</li></ul></section>
+<section><h2>Exit codes</h2>
+<table><tr><th>Code</th><th>Meaning</th></tr><tr><td>0</td><td>OK, also 4xx/5xx without <code>--check-status</code></td></tr><tr><td>1</td><td>error / bad args</td></tr><tr><td>2</td><td>timeout</td></tr><tr><td>3/4/5</td><td>HTTP 3xx/4xx/5xx with <code>--check-status</code></td></tr><tr><td>6 / 7</td><td>too many redirects / plugin error</td></tr><tr><td>130</td><td>Ctrl-C</td></tr></table></section>
+<section><h2>Dev loop</h2>
+<pre><code>python3 -m venv venv &amp;&amp; . venv/bin/activate
+pip install -e &#x27;.[test]&#x27;
+python -m pytest tests/test_cli.py
+make codestyle   # flake8</code></pre>
+<ul><li>one test: <code>pytest tests/test_x.py::TestY::test_z</code></li><li>most tests hit a local httpbin (pytest-httpbin)</li></ul></section>
+<section><h2>Where code lives</h2>
+<ul><li>flags: <code>httpie/cli/definition.py</code></li><li>defaults, method guess: <code>cli/argparser.py</code></li><li>main loop, exit codes: <code>core.py</code></li><li>sending: <code>client.py</code> · output: <code>output/</code></li><li>flow: <code>raw_main</code> → <code>program</code> → <code>collect_messages</code> → <code>write_message</code></li></ul></section>
+<section><h2>Config and plugins</h2>
+<ul><li>dir: <code>$HTTPIE_CONFIG_DIR</code>, else <code>~/.httpie</code> if present, else <code>~/.config/httpie</code> (Windows: <code>%APPDATA%\httpie</code>)</li><li><code>config.json</code> <code>{"default_options": ["--style=fruity"]}</code> prepends flags to every call</li><li>sessions: <code>sessions/HOST/NAME.json</code> in that dir</li><li><code>httpie cli plugins install httpie-foo</code> / <code>list</code> / <code>uninstall</code></li><li>plugin classes: <code>httpie/plugins/base.py</code> (Auth, Transport, Converter, Formatter)</li></ul></section>
+<section class="gotchas"><h2>Gotchas</h2>
+<ul><li>⚠ Method is guessed: data items or stdin → POST, else GET.</li><li>⚠ 4xx/5xx exit 0 by default, because only <code>--check-status</code> maps status to exit code.</li><li>⚠ <code>--download</code> implies <code>--follow</code>, so it saves the final redirect target.</li><li>⚠ Sessions never store headers starting <code>Content-</code> or <code>If-</code>; they're per request.</li><li>⚠ Don't edit <code>extras/man/*.1</code>: CI regenerates them on push to master.</li><li>⚠ Bug report? Paste <code>http --debug &lt;command&gt;</code> output.</li></ul></section>
+</div></div></body></html>

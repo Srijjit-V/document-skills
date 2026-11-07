@@ -1,0 +1,1213 @@
+{
+ "minutes/plain": {
+  "content": {
+   "words": 544,
+   "total_words": 544,
+   "lint": 80,
+   "lint_pass": false,
+   "lint_flags": [
+    "budget"
+   ],
+   "answered": 5,
+   "of": 5,
+   "median_pos": 61,
+   "positions": [
+    40,
+    45,
+    86,
+    136,
+    61
+   ],
+   "untraced": {
+    "numbers": [
+     "1",
+     "2",
+     "3",
+     "4",
+     "5",
+     "6",
+     "7",
+     "8",
+     "9",
+     "28",
+     "31",
+     "85",
+     "90",
+     "1100",
+     "2310",
+     "2400",
+     "5180"
+    ],
+    "names": [],
+    "quotes": [],
+    "citations": []
+   },
+   "traced_share": 0.433,
+   "hard_fail": false
+  },
+  "layout": {
+   "default": {
+    "pages": 2,
+    "body_pt": 12.0,
+    "min_pt": 8.0,
+    "pct_under_10": 8.1,
+    "chars_per_line": 75.6,
+    "leading": 1.12,
+    "score": 70,
+    "stranded": 1,
+    "issues": [
+     "leading",
+     "stranded_heading",
+     "text_near_edge"
+    ],
+    "retried": false
+   },
+   "polished": {
+    "pages": 2,
+    "body_pt": 10.5,
+    "min_pt": 10.0,
+    "pct_under_10": 0.0,
+    "chars_per_line": 64.6,
+    "leading": 1.36,
+    "score": 100,
+    "stranded": 0,
+    "issues": [],
+    "retried": false
+   },
+   "markdown": {
+    "score": 97,
+    "issues": [
+     "stacked_headings"
+    ]
+   }
+  }
+ },
+ "minutes/skill": {
+  "content": {
+   "words": 404,
+   "total_words": 404,
+   "lint": 100,
+   "lint_pass": true,
+   "lint_flags": [],
+   "answered": 5,
+   "of": 5,
+   "median_pos": 79,
+   "positions": [
+    44,
+    37,
+    132,
+    224,
+    79
+   ],
+   "untraced": {
+    "numbers": [
+     "1",
+     "4",
+     "6",
+     "7",
+     "8",
+     "9",
+     "12",
+     "28",
+     "31",
+     "85",
+     "90",
+     "1100",
+     "2310",
+     "2400",
+     "5180"
+    ],
+    "names": [],
+    "quotes": [],
+    "citations": []
+   },
+   "traced_share": 0.464,
+   "hard_fail": false
+  },
+  "layout": {
+   "default": {
+    "pages": 1,
+    "body_pt": 12.0,
+    "min_pt": 8.0,
+    "pct_under_10": 5.5,
+    "chars_per_line": 73.4,
+    "leading": 1.12,
+    "score": 80,
+    "stranded": 0,
+    "issues": [
+     "leading",
+     "text_near_edge"
+    ],
+    "retried": false
+   },
+   "polished": {
+    "pages": 2,
+    "body_pt": 10.5,
+    "min_pt": 10.0,
+    "pct_under_10": 0.0,
+    "chars_per_line": 63.3,
+    "leading": 1.36,
+    "score": 100,
+    "stranded": 0,
+    "issues": [],
+    "retried": false
+   },
+   "markdown": {
+    "score": 100,
+    "issues": []
+   }
+  }
+ },
+ "memo/plain": {
+  "content": {
+   "words": 499,
+   "total_words": 499,
+   "lint": 78,
+   "lint_pass": false,
+   "lint_flags": [
+    "bold",
+    "bold_labels",
+    "filler"
+   ],
+   "answered": 5,
+   "of": 5,
+   "median_pos": 48,
+   "positions": [
+    55,
+    150,
+    33,
+    26,
+    48
+   ],
+   "untraced": {
+    "numbers": [
+     "0.3",
+     "4",
+     "7"
+    ],
+    "names": [
+     "NorthRoute-bound"
+    ],
+    "quotes": [],
+    "citations": []
+   },
+   "traced_share": 0.882,
+   "hard_fail": false
+  },
+  "layout": {
+   "default": {
+    "pages": 2,
+    "body_pt": 12.0,
+    "min_pt": 8.0,
+    "pct_under_10": 8.1,
+    "chars_per_line": 79.9,
+    "leading": 1.12,
+    "score": 70,
+    "stranded": 1,
+    "issues": [
+     "leading",
+     "stranded_heading",
+     "text_near_edge"
+    ],
+    "retried": false
+   },
+   "polished": {
+    "pages": 2,
+    "body_pt": 11.0,
+    "min_pt": 10.0,
+    "pct_under_10": 0.0,
+    "chars_per_line": 67.7,
+    "leading": 1.3,
+    "score": 100,
+    "stranded": 0,
+    "issues": [],
+    "retried": false
+   },
+   "markdown": {
+    "score": 100,
+    "issues": []
+   }
+  }
+ },
+ "memo/skill": {
+  "content": {
+   "words": 325,
+   "total_words": 325,
+   "lint": 100,
+   "lint_pass": true,
+   "lint_flags": [],
+   "answered": 5,
+   "of": 5,
+   "median_pos": 49,
+   "positions": [
+    58,
+    135,
+    19,
+    23,
+    49
+   ],
+   "untraced": {
+    "numbers": [],
+    "names": [],
+    "quotes": [],
+    "citations": []
+   },
+   "traced_share": 1.0,
+   "hard_fail": false
+  },
+  "layout": {
+   "default": {
+    "pages": 1,
+    "body_pt": 12.0,
+    "min_pt": 8.0,
+    "pct_under_10": 6.4,
+    "chars_per_line": 81.6,
+    "leading": 1.12,
+    "score": 80,
+    "stranded": 0,
+    "issues": [
+     "leading",
+     "text_near_edge"
+    ],
+    "retried": false
+   },
+   "polished": {
+    "pages": 1,
+    "body_pt": 11.0,
+    "min_pt": 10.0,
+    "pct_under_10": 0.0,
+    "chars_per_line": 65.9,
+    "leading": 1.3,
+    "score": 100,
+    "stranded": 0,
+    "issues": [],
+    "retried": false
+   },
+   "markdown": {
+    "score": 100,
+    "issues": []
+   }
+  }
+ },
+ "cover-letter/plain": {
+  "content": {
+   "words": 255,
+   "total_words": 255,
+   "lint": 100,
+   "lint_pass": true,
+   "lint_flags": [],
+   "answered": 5,
+   "of": 5,
+   "median_pos": 98,
+   "positions": [
+    29,
+    14,
+    98,
+    104,
+    208
+   ],
+   "untraced": {
+    "numbers": [
+     "4"
+    ],
+    "names": [],
+    "quotes": [],
+    "citations": []
+   },
+   "traced_share": 0.976,
+   "hard_fail": false
+  },
+  "layout": {
+   "default": {
+    "pages": 1,
+    "body_pt": 12.0,
+    "min_pt": 8.0,
+    "pct_under_10": 8.3,
+    "chars_per_line": 75,
+    "leading": 1.12,
+    "score": 70,
+    "stranded": 0,
+    "issues": [
+     "leading",
+     "small_text",
+     "text_near_edge"
+    ],
+    "retried": false
+   },
+   "polished": {
+    "pages": 1,
+    "body_pt": 11.0,
+    "min_pt": 11.0,
+    "pct_under_10": 0.0,
+    "chars_per_line": 69.7,
+    "leading": 1.3,
+    "score": 100,
+    "stranded": 0,
+    "issues": [],
+    "retried": false
+   },
+   "markdown": {
+    "score": 100,
+    "issues": []
+   }
+  }
+ },
+ "cover-letter/skill": {
+  "content": {
+   "words": 210,
+   "total_words": 210,
+   "lint": 100,
+   "lint_pass": true,
+   "lint_flags": [],
+   "answered": 5,
+   "of": 5,
+   "median_pos": 54,
+   "positions": [
+    28,
+    13,
+    54,
+    65,
+    155
+   ],
+   "untraced": {
+    "numbers": [
+     "4"
+    ],
+    "names": [],
+    "quotes": [],
+    "citations": []
+   },
+   "traced_share": 0.969,
+   "hard_fail": false
+  },
+  "layout": {
+   "default": {
+    "pages": 1,
+    "body_pt": 12.0,
+    "min_pt": 8.0,
+    "pct_under_10": 10.3,
+    "chars_per_line": 82.4,
+    "leading": 1.12,
+    "score": 70,
+    "stranded": 0,
+    "issues": [
+     "leading",
+     "small_text",
+     "text_near_edge"
+    ],
+    "retried": false
+   },
+   "polished": {
+    "pages": 1,
+    "body_pt": 11.0,
+    "min_pt": 11.0,
+    "pct_under_10": 0.0,
+    "chars_per_line": 67.3,
+    "leading": 1.3,
+    "score": 100,
+    "stranded": 0,
+    "issues": [],
+    "retried": false
+   },
+   "markdown": {
+    "score": 100,
+    "issues": []
+   }
+  }
+ },
+ "lab-report/plain": {
+  "content": {
+   "words": 1008,
+   "total_words": 1008,
+   "lint": 88,
+   "lint_pass": true,
+   "lint_flags": [
+    "bold_labels",
+    "filler"
+   ],
+   "answered": 5,
+   "of": 5,
+   "median_pos": 206,
+   "positions": [
+    53,
+    76,
+    227,
+    231,
+    206
+   ],
+   "untraced": {
+    "numbers": [
+     "0.005",
+     "0.02",
+     "0.03",
+     "0.05",
+     "0.3",
+     "0.4",
+     "0.810",
+     "0.900",
+     "1.0",
+     "1.270",
+     "1.550",
+     "1.613",
+     "1.800",
+     "2.010",
+     "2.2",
+     "2.403",
+     "2.5",
+     "3.240",
+     "4.04",
+     "4.040",
+     "9.00",
+     "9.75",
+     "9.76",
+     "9.77",
+     "9.78",
+     "9.79",
+     "9.8",
+     "9.86",
+     "12.70",
+     "15.50",
+     "16",
+     "18.00",
+     "20",
+     "20.10"
+    ],
+    "names": [],
+    "quotes": [],
+    "citations": []
+   },
+   "traced_share": 0.477,
+   "hard_fail": false
+  },
+  "layout": {
+   "default": {
+    "pages": 3,
+    "body_pt": 12.0,
+    "min_pt": 8.0,
+    "pct_under_10": 7.8,
+    "chars_per_line": 70.5,
+    "leading": 1.12,
+    "score": 60,
+    "stranded": 1,
+    "issues": [
+     "leading",
+     "small_text",
+     "stranded_heading",
+     "text_near_edge"
+    ],
+    "retried": false
+   },
+   "polished": {
+    "pages": 3,
+    "body_pt": 11.0,
+    "min_pt": 10.0,
+    "pct_under_10": 0.0,
+    "chars_per_line": 62.2,
+    "leading": 1.36,
+    "score": 100,
+    "stranded": 0,
+    "issues": [],
+    "retried": false
+   },
+   "markdown": {
+    "score": 97,
+    "issues": [
+     "stacked_headings"
+    ]
+   }
+  }
+ },
+ "lab-report/skill": {
+  "content": {
+   "words": 739,
+   "total_words": 739,
+   "lint": 100,
+   "lint_pass": true,
+   "lint_flags": [],
+   "answered": 5,
+   "of": 5,
+   "median_pos": 107,
+   "positions": [
+    51,
+    57,
+    107,
+    122,
+    128
+   ],
+   "untraced": {
+    "numbers": [
+     "0.005",
+     "0.02",
+     "0.05",
+     "0.3",
+     "0.900",
+     "1.270",
+     "1.550",
+     "1.800",
+     "2.01",
+     "2.010",
+     "2.5",
+     "4.04",
+     "9.75",
+     "9.76",
+     "9.77",
+     "9.78",
+     "9.79",
+     "9.86"
+    ],
+    "names": [],
+    "quotes": [],
+    "citations": []
+   },
+   "traced_share": 0.64,
+   "hard_fail": false
+  },
+  "layout": {
+   "default": {
+    "pages": 2,
+    "body_pt": 12.0,
+    "min_pt": 8.0,
+    "pct_under_10": 7.7,
+    "chars_per_line": 74.4,
+    "leading": 1.12,
+    "score": 70,
+    "stranded": 0,
+    "issues": [
+     "leading",
+     "small_text",
+     "text_near_edge"
+    ],
+    "retried": false
+   },
+   "polished": {
+    "pages": 3,
+    "body_pt": 11.0,
+    "min_pt": 10.0,
+    "pct_under_10": 0.0,
+    "chars_per_line": 62,
+    "leading": 1.36,
+    "score": 100,
+    "stranded": 0,
+    "issues": [],
+    "retried": false
+   },
+   "markdown": {
+    "score": 100,
+    "issues": []
+   }
+  }
+ },
+ "study-guide/plain": {
+  "content": {
+   "words": 743,
+   "total_words": 743,
+   "lint": 100,
+   "lint_pass": true,
+   "lint_flags": [],
+   "answered": 5,
+   "of": 5,
+   "median_pos": 191,
+   "positions": [
+    75,
+    191,
+    420,
+    309,
+    15
+   ],
+   "untraced": {
+    "numbers": [
+     "3",
+     "4",
+     "5",
+     "10",
+     "20",
+     "35",
+     "50"
+    ],
+    "names": [],
+    "quotes": [
+     "start at the ocean."
+    ],
+    "citations": []
+   },
+   "traced_share": 0.667,
+   "hard_fail": true
+  },
+  "layout": {
+   "default": {
+    "pages": 3,
+    "body_pt": 12.0,
+    "min_pt": 8.0,
+    "pct_under_10": 8.6,
+    "chars_per_line": 66.0,
+    "leading": 1.12,
+    "score": 70,
+    "stranded": 0,
+    "issues": [
+     "leading",
+     "small_text",
+     "text_near_edge"
+    ],
+    "retried": false
+   },
+   "polished": {
+    "pages": 3,
+    "body_pt": 11.0,
+    "min_pt": 10.0,
+    "pct_under_10": 0.0,
+    "chars_per_line": 56.8,
+    "leading": 1.36,
+    "score": 100,
+    "stranded": 0,
+    "issues": [],
+    "retried": false
+   },
+   "markdown": {
+    "score": 96,
+    "issues": [
+     "bold_fake_heading"
+    ]
+   }
+  }
+ },
+ "study-guide/skill": {
+  "content": {
+   "words": 691,
+   "total_words": 691,
+   "lint": 98,
+   "lint_pass": true,
+   "lint_flags": [
+    "rule_of_three"
+   ],
+   "answered": 5,
+   "of": 5,
+   "median_pos": 197,
+   "positions": [
+    247,
+    80,
+    197,
+    386,
+    19
+   ],
+   "untraced": {
+    "numbers": [
+     "20",
+     "25",
+     "35",
+     "50",
+     "80",
+     "100"
+    ],
+    "names": [],
+    "quotes": [],
+    "citations": []
+   },
+   "traced_share": 0.739,
+   "hard_fail": false
+  },
+  "layout": {
+   "default": {
+    "pages": 3,
+    "body_pt": 12.0,
+    "min_pt": 8.0,
+    "pct_under_10": 9.0,
+    "chars_per_line": 69.6,
+    "leading": 1.12,
+    "score": 70,
+    "stranded": 0,
+    "issues": [
+     "leading",
+     "small_text",
+     "text_near_edge"
+    ],
+    "retried": false
+   },
+   "polished": {
+    "pages": 3,
+    "body_pt": 11.0,
+    "min_pt": 10.0,
+    "pct_under_10": 0.0,
+    "chars_per_line": 60.8,
+    "leading": 1.36,
+    "score": 100,
+    "stranded": 0,
+    "issues": [],
+    "retried": false
+   },
+   "markdown": {
+    "score": 97,
+    "issues": [
+     "stacked_headings"
+    ]
+   }
+  }
+ },
+ "cram-sheet/plain": {
+  "content": {
+   "words": 221,
+   "total_words": 221,
+   "lint": 90,
+   "lint_pass": true,
+   "lint_flags": [
+    "bold"
+   ],
+   "answered": 5,
+   "of": 5,
+   "median_pos": 66,
+   "positions": [
+    33,
+    66,
+    164,
+    113,
+    11
+   ],
+   "untraced": {
+    "numbers": [],
+    "names": [],
+    "quotes": [],
+    "citations": []
+   },
+   "traced_share": 1.0,
+   "hard_fail": false
+  },
+  "layout": {
+   "html": {
+    "pages": 1,
+    "body_pt": 10.0,
+    "min_pt": 9.5,
+    "pct_under_10": 11.1,
+    "chars_per_line": 58.1,
+    "score": 100,
+    "issues": []
+   }
+  }
+ },
+ "cram-sheet/skill": {
+  "content": {
+   "words": 336,
+   "total_words": 339,
+   "lint": 100,
+   "lint_pass": true,
+   "lint_flags": [],
+   "answered": 5,
+   "of": 5,
+   "median_pos": 45,
+   "positions": [
+    37,
+    153,
+    45,
+    233,
+    17
+   ],
+   "untraced": {
+    "numbers": [
+     "20",
+     "50",
+     "100"
+    ],
+    "names": [],
+    "quotes": [],
+    "citations": []
+   },
+   "traced_share": 0.824,
+   "hard_fail": false
+  },
+  "layout": {
+   "html": {
+    "pages": 1,
+    "body_pt": 8.5,
+    "min_pt": 8.0,
+    "pct_under_10": 97.6,
+    "chars_per_line": 43.6,
+    "score": 100,
+    "issues": []
+   }
+  }
+ },
+ "essay/plain": {
+  "content": {
+   "words": 817,
+   "total_words": 817,
+   "lint": 86,
+   "lint_pass": true,
+   "lint_flags": [
+    "recap",
+    "restate"
+   ],
+   "answered": 5,
+   "of": 5,
+   "median_pos": 277,
+   "positions": [
+    167,
+    277,
+    454,
+    767,
+    1
+   ],
+   "untraced": {
+    "numbers": [],
+    "names": [
+     "Case",
+     "Name",
+     "Section",
+     "Starting",
+     "Trying",
+     "Worth"
+    ],
+    "quotes": [],
+    "citations": []
+   },
+   "traced_share": 0.882,
+   "hard_fail": false
+  },
+  "layout": {
+   "default": {
+    "pages": 2,
+    "body_pt": 12.0,
+    "min_pt": 8.0,
+    "pct_under_10": 5.1,
+    "chars_per_line": 88.2,
+    "leading": 1.12,
+    "score": 80,
+    "stranded": 0,
+    "issues": [
+     "leading",
+     "text_near_edge"
+    ],
+    "retried": false
+   },
+   "polished": {
+    "pages": 3,
+    "body_pt": 12.0,
+    "min_pt": 12.0,
+    "pct_under_10": 0.0,
+    "chars_per_line": 75.7,
+    "leading": 2.0,
+    "score": 100,
+    "stranded": 0,
+    "issues": [],
+    "retried": false
+   },
+   "markdown": {
+    "score": 92,
+    "issues": [
+     "bold_fake_heading"
+    ]
+   }
+  }
+ },
+ "essay/skill": {
+  "content": {
+   "words": 690,
+   "total_words": 690,
+   "lint": 100,
+   "lint_pass": true,
+   "lint_flags": [],
+   "answered": 5,
+   "of": 5,
+   "median_pos": 204,
+   "positions": [
+    116,
+    204,
+    329,
+    631,
+    3
+   ],
+   "untraced": {
+    "numbers": [],
+    "names": [],
+    "quotes": [],
+    "citations": []
+   },
+   "traced_share": 1.0,
+   "hard_fail": false
+  },
+  "layout": {
+   "default": {
+    "pages": 2,
+    "body_pt": 12.0,
+    "min_pt": 8.0,
+    "pct_under_10": 6.2,
+    "chars_per_line": 89.2,
+    "leading": 1.12,
+    "score": 80,
+    "stranded": 0,
+    "issues": [
+     "leading",
+     "text_near_edge"
+    ],
+    "retried": false
+   },
+   "polished": {
+    "pages": 2,
+    "body_pt": 12.0,
+    "min_pt": 12.0,
+    "pct_under_10": 0.0,
+    "chars_per_line": 75.0,
+    "leading": 2.0,
+    "score": 100,
+    "stranded": 0,
+    "issues": [],
+    "retried": false
+   },
+   "markdown": {
+    "score": 100,
+    "issues": []
+   }
+  }
+ },
+ "proposal/plain": {
+  "content": {
+   "words": 422,
+   "total_words": 422,
+   "lint": 82,
+   "lint_pass": true,
+   "lint_flags": [
+    "bold",
+    "bold_labels"
+   ],
+   "answered": 5,
+   "of": 5,
+   "median_pos": 83,
+   "positions": [
+    23,
+    332,
+    69,
+    98,
+    83
+   ],
+   "untraced": {
+    "numbers": [],
+    "names": [],
+    "quotes": [],
+    "citations": []
+   },
+   "traced_share": 1.0,
+   "hard_fail": false
+  },
+  "layout": {
+   "default": {
+    "pages": 2,
+    "body_pt": 12.0,
+    "min_pt": 8.0,
+    "pct_under_10": 9.4,
+    "chars_per_line": 71.5,
+    "leading": 1.12,
+    "score": 70,
+    "stranded": 0,
+    "issues": [
+     "leading",
+     "small_text",
+     "text_near_edge"
+    ],
+    "retried": false
+   },
+   "polished": {
+    "pages": 2,
+    "body_pt": 11.0,
+    "min_pt": 10.0,
+    "pct_under_10": 0.0,
+    "chars_per_line": 58.8,
+    "leading": 1.36,
+    "score": 100,
+    "stranded": 0,
+    "issues": [],
+    "retried": false
+   },
+   "markdown": {
+    "score": 100,
+    "issues": []
+   }
+  }
+ },
+ "proposal/skill": {
+  "content": {
+   "words": 326,
+   "total_words": 326,
+   "lint": 100,
+   "lint_pass": true,
+   "lint_flags": [],
+   "answered": 5,
+   "of": 5,
+   "median_pos": 76,
+   "positions": [
+    20,
+    212,
+    56,
+    76,
+    343
+   ],
+   "untraced": {
+    "numbers": [
+     "81"
+    ],
+    "names": [],
+    "quotes": [],
+    "citations": []
+   },
+   "traced_share": 0.964,
+   "hard_fail": false
+  },
+  "layout": {
+   "default": {
+    "pages": 2,
+    "body_pt": 12.0,
+    "min_pt": 8.0,
+    "pct_under_10": 11.9,
+    "chars_per_line": 76.4,
+    "leading": 1.12,
+    "score": 70,
+    "stranded": 0,
+    "issues": [
+     "leading",
+     "small_text",
+     "text_near_edge"
+    ],
+    "retried": false
+   },
+   "polished": {
+    "pages": 2,
+    "body_pt": 11.0,
+    "min_pt": 10.0,
+    "pct_under_10": 0.0,
+    "chars_per_line": 63.6,
+    "leading": 1.36,
+    "score": 100,
+    "stranded": 0,
+    "issues": [],
+    "retried": false
+   },
+   "markdown": {
+    "score": 100,
+    "issues": []
+   }
+  }
+ },
+ "readme/plain": {
+  "content": {
+   "words": 216,
+   "total_words": 260,
+   "lint": 100,
+   "lint_pass": true,
+   "lint_flags": [],
+   "answered": 5,
+   "of": 5,
+   "median_pos": 54,
+   "positions": [
+    46,
+    54,
+    52,
+    84,
+    274
+   ],
+   "untraced": {
+    "numbers": [
+     "3.6"
+    ],
+    "names": [
+     "CHAR"
+    ],
+    "quotes": [],
+    "citations": []
+   },
+   "traced_share": 0.846,
+   "hard_fail": false
+  },
+  "layout": {
+   "default": {
+    "pages": 2,
+    "body_pt": 12.0,
+    "min_pt": 8.0,
+    "pct_under_10": 36.2,
+    "chars_per_line": 83.6,
+    "leading": 1.12,
+    "score": 60,
+    "stranded": 1,
+    "issues": [
+     "leading",
+     "small_text",
+     "stranded_heading",
+     "text_near_edge"
+    ],
+    "retried": false
+   },
+   "polished": {
+    "pages": 2,
+    "body_pt": 11.0,
+    "min_pt": 10.0,
+    "pct_under_10": 0.0,
+    "chars_per_line": 60.8,
+    "leading": 1.36,
+    "score": 100,
+    "stranded": 0,
+    "issues": [],
+    "retried": false
+   },
+   "markdown": {
+    "score": 100,
+    "issues": []
+   }
+  }
+ },
+ "readme/skill": {
+  "content": {
+   "words": 245,
+   "total_words": 295,
+   "lint": 100,
+   "lint_pass": true,
+   "lint_flags": [],
+   "answered": 5,
+   "of": 5,
+   "median_pos": 89,
+   "positions": [
+    29,
+    89,
+    84,
+    107,
+    289
+   ],
+   "untraced": {
+    "numbers": [],
+    "names": [],
+    "quotes": [],
+    "citations": []
+   },
+   "traced_share": 1.0,
+   "hard_fail": false
+  },
+  "layout": {
+   "default": {
+    "pages": 1,
+    "body_pt": 12.0,
+    "min_pt": 8.0,
+    "pct_under_10": 28.7,
+    "chars_per_line": 71.7,
+    "leading": 1.12,
+    "score": 70,
+    "stranded": 0,
+    "issues": [
+     "leading",
+     "small_text",
+     "text_near_edge"
+    ],
+    "retried": false
+   },
+   "polished": {
+    "pages": 2,
+    "body_pt": 11.0,
+    "min_pt": 10.0,
+    "pct_under_10": 0.0,
+    "chars_per_line": 62.3,
+    "leading": 1.36,
+    "score": 100,
+    "stranded": 0,
+    "issues": [],
+    "retried": false
+   },
+   "markdown": {
+    "score": 100,
+    "issues": []
+   }
+  }
+ }
+}

@@ -1,0 +1,128 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ItsDangerous Cheat Sheet</title>
+<style>
+  @page { size: letter; margin: 0.4in; }
+  :root { --ink:#1a1a1a; --muted:#555; --accent:#0b5d7a; --rule:#c9d6dc; --code:#f2f5f7; }
+  * { box-sizing: border-box; }
+  html, body { margin:0; background:#fff; color:var(--ink); }
+  body { font: 8.1pt/1.3 -apple-system, "Segoe UI", Helvetica, Arial, sans-serif;
+         -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  .page { width: 7.7in; margin: 0 auto; }
+  @media screen { body { background:#e8ecee; } .page { background:#fff; padding:0.4in; margin:16px auto; box-shadow:0 1px 6px rgba(0,0,0,.15); width:8.5in; min-height:11in; } }
+  header { display:flex; justify-content:space-between; align-items:baseline; border-bottom:2px solid var(--accent); padding-bottom:3px; margin-bottom:6px; }
+  h1 { font-size:15pt; margin:0; color:var(--accent); }
+  header p { margin:0; color:var(--muted); font-size:7.6pt; }
+  .warn { background:#fff4e0; border-left:3px solid #d98a00; padding:3px 6px; margin-bottom:6px; font-size:7.8pt; }
+  .cols { column-count:2; column-gap:0.22in; }
+  section { break-inside:avoid; margin-bottom:6px; }
+  h2 { font-size:9pt; margin:0 0 2px; color:var(--accent); text-transform:uppercase; letter-spacing:.04em; border-bottom:1px solid var(--rule); }
+  table { width:100%; border-collapse:collapse; font-size:7.6pt; }
+  td, th { padding:1px 3px; border-bottom:1px solid #e3e9ec; vertical-align:top; text-align:left; }
+  th { font-weight:600; color:var(--muted); }
+  code, pre { font-family: "SF Mono", Menlo, Consolas, monospace; font-size:7.1pt; }
+  code { background:var(--code); padding:0 2px; border-radius:2px; }
+  pre { background:var(--code); margin:2px 0; padding:3px 5px; border-radius:3px; white-space:pre-wrap; line-height:1.25; }
+  pre code { background:none; padding:0; }
+  ul { margin:2px 0; padding-left:13px; } li { margin:0 0 1px; }
+  p { margin:2px 0; }
+</style>
+</head>
+<body>
+<div class="page">
+<header>
+  <h1>ItsDangerous Cheat Sheet</h1>
+  <p>Signed tokens for untrusted round trips · Python 3.10+ · zero deps</p>
+</header>
+<div class="warn"><strong>Signed ≠ encrypted.</strong> Anyone can base64-decode and read a token's payload. ItsDangerous only proves it wasn't modified.</div>
+<div class="cols">
+
+<section><h2>Pick a class</h2>
+<table>
+<tr><td>Sign raw bytes/str</td><td><code>Signer</code></td></tr>
+<tr><td>+ timestamp / expiry</td><td><code>TimestampSigner</code></td></tr>
+<tr><td>Sign objects (JSON)</td><td><code>Serializer</code></td></tr>
+<tr><td>+ expiry</td><td><code>TimedSerializer</code></td></tr>
+<tr><td>URL/cookie-safe, compressed</td><td><code>URLSafeSerializer</code></td></tr>
+<tr><td>URL-safe + expiry (most common)</td><td><code>URLSafeTimedSerializer</code></td></tr>
+</table></section>
+
+<section><h2>Core usage</h2>
+<pre><code>from itsdangerous import (URLSafeTimedSerializer,
+    BadSignature, SignatureExpired)
+s = URLSafeTimedSerializer(SECRET_KEY, salt="pw-reset")
+token = s.dumps({"user_id": 42})          # str
+try:
+    data = s.loads(token, max_age=3600)   # seconds
+    data, ts = s.loads(token, max_age=3600,
+                       return_timestamp=True)  # aware UTC
+except SignatureExpired as e: ...         # e.date_signed
+except BadSignature as e: ...             # e.payload (unverified)</code></pre>
+<pre><code>Signer(KEY).sign("v")            # b'v.SIG'
+Signer(KEY).unsign(b"v.SIG")     # b'v' | BadSignature
+Signer(KEY).validate(b"v.SIG")   # True / False
+TimestampSigner(KEY).unsign(v, max_age=60,
+                            return_timestamp=True)</code></pre></section>
+
+<section><h2>Constructor knobs</h2>
+<table>
+<tr><th>Arg</th><th>Default</th><th>Meaning</th></tr>
+<tr><td><code>secret_key</code></td><td>—</td><td>str/bytes or list oldest→newest; last signs, all verify</td></tr>
+<tr><td><code>salt</code></td><td><code>b"itsdangerous"</code> / Signer: <code>b"itsdangerous.Signer"</code></td><td>unique per purpose</td></tr>
+<tr><td><code>serializer</code></td><td><code>json</code> (URL-safe: compact)</td><td>any <code>dumps</code>/<code>loads</code> obj</td></tr>
+<tr><td><code>signer_kwargs</code></td><td><code>{}</code></td><td>sep, digest_method, key_derivation, algorithm</td></tr>
+<tr><td><code>fallback_signers</code></td><td><code>[]</code></td><td>tried by <code>loads</code> only</td></tr>
+<tr><td><code>digest_method</code></td><td>sha1 (in HMAC)</td><td>e.g. <code>hashlib.sha256</code></td></tr>
+<tr><td><code>key_derivation</code></td><td><code>django-concat</code></td><td><code>concat</code>, <code>hmac</code>, <code>none</code></td></tr>
+<tr><td><code>sep</code></td><td><code>b"."</code></td><td>not in <code>A-Za-z0-9-_=</code></td></tr>
+</table></section>
+
+<section><h2>Serializer methods</h2>
+<p><code>dumps(obj, salt=None)</code> · <code>loads(s, salt=None)</code> · <code>dump(obj, f)</code> · <code>load(f)</code> · <code>loads_unsafe(s)</code> → <code>(ok, payload)</code> <em>debug only</em> · <code>load_payload(b)</code> · <code>make_signer(salt)</code></p>
+<p><strong>Timed:</strong> <code>loads(s, max_age=None, return_timestamp=False, salt=None)</code> — pass <code>salt=</code> by keyword.</p></section>
+
+<section><h2>Exceptions</h2>
+<pre><code>BadData (.message)
+├─ BadPayload (.original_error)       deserialize failed
+└─ BadSignature (.payload)            tampered/key/salt
+   ├─ BadHeader                       legacy
+   └─ BadTimeSignature (.date_signed) bad timed sig
+      └─ SignatureExpired             age &gt; max_age / future</code></pre>
+<p>Catch <code>SignatureExpired</code> before <code>BadSignature</code>.</p></section>
+
+<section><h2>Token formats</h2>
+<table>
+<tr><td><code>Signer</code></td><td><code>value.SIG</code></td></tr>
+<tr><td><code>TimestampSigner</code></td><td><code>value.TS.SIG</code></td></tr>
+<tr><td><code>URLSafe*</code></td><td><code>B64(json)[.TS].SIG</code>; leading <code>.</code> = zlib</td></tr>
+</table></section>
+
+<section><h2>Recipes</h2>
+<pre><code># key rotation
+URLSafeSerializer(["old-key", "new-key"])
+# digest upgrade, old tokens still load
+URLSafeSerializer(KEY,
+  signer_kwargs={"digest_method": hashlib.sha256},
+  fallback_signers=[{"digest_method": hashlib.sha1}])
+# generate a key
+python3 -c 'import os; print(os.urandom(16).hex())'</code></pre></section>
+
+<section><h2>Gotchas</h2>
+<ul>
+<li>No <code>max_age</code> → never expires. Tokens replay until expiry; enforce one-time use server-side.</li>
+<li>Use a different salt per purpose, or tokens work across contexts.</li>
+<li>Never use <code>pickle</code> as the serializer.</li>
+<li><code>SignatureExpired</code> skips fallback signers.</li>
+<li>No <code>__version__</code>: <code>importlib.metadata.version("itsdangerous")</code>.</li>
+</ul></section>
+
+<section><h2>Dev commands</h2>
+<p><code>uv sync</code> · <code>uv run pytest</code> · <code>uv run tox run -e typing</code> (mypy+pyright) · <code>-e style</code> (pre-commit/ruff) · <code>-e docs</code> · changelog → <code>CHANGES.rst</code> “Unreleased”</p></section>
+
+</div>
+</div>
+</body>
+</html>

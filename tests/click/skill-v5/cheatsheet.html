@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Click: build a CLI</title>
+<style>
+@page { size: letter; margin: 0.4in; }
+:root { --ink:#111; --muted:#555; --rule:#bbb; --accent:#0b5cad; --warn:#a33; --box:#f6f7f9; }
+* { box-sizing: border-box; }
+body { font: 8.5pt/1.3 -apple-system, "Segoe UI", Helvetica, Arial, sans-serif; color: var(--ink);
+       background:#fff; margin: 0; }
+.sheet { max-width: 7.7in; margin: 0 auto; }
+header { display:flex; align-items: baseline; justify-content: space-between;
+         border-bottom: 2px solid var(--ink); margin-bottom: 4pt; }
+h1 { font-size: 15pt; margin: 0 0 2pt; }
+.meta { color: var(--muted); font-size: 8pt; }
+.one { background: var(--ink); color:#fff; padding: 4pt 6pt; margin: 0 0 3pt; font-size: 9.5pt; border-radius: 3pt; }
+.one strong { color: #ffd84d; }
+.one code { background: #333; color: #ffd84d; }
+.legend { color: var(--muted); font-size: 8pt; margin: 0 0 5pt; }
+.cols { column-count: var(--cols); column-gap: 8pt; }
+section { break-inside: avoid; background: var(--box); border: 1px solid var(--rule);
+          border-radius: 3pt; padding: 3pt 5pt 4pt; margin: 0 0 6pt; }
+section.gotchas { border-color: var(--warn); background: #fff6f5; }
+h2 { font-size: 9.5pt; margin: 0 0 2pt; color: var(--accent); text-transform: uppercase; letter-spacing: .03em; }
+section.gotchas h2 { color: var(--warn); }
+h3 { font-size: 8.5pt; margin: 3pt 0 1pt; }
+p { margin: 1pt 0 2pt; }
+ul, ol { margin: 1pt 0 2pt; padding-left: 11pt; }
+li { margin: 0 0 1pt; }
+table { border-collapse: collapse; width: 100%; margin: 1pt 0 2pt; }
+th, td { text-align: left; vertical-align: top; padding: 1pt 3pt; border-bottom: 1px solid #ddd; }
+th { font-size: 8pt; color: var(--muted); font-weight: 600; }
+code { font: 8pt/1.25 ui-monospace, Menlo, Consolas, monospace; background:#e9ecf0; padding: 0 2pt; border-radius: 2pt;
+       overflow-wrap: anywhere; }
+td { overflow-wrap: break-word; }
+pre { background:#e9ecf0; padding: 2pt 4pt; margin: 1pt 0 2pt; white-space: pre-wrap; border-radius: 2pt; }
+pre code { background: none; padding: 0; }
+a { color: var(--accent); text-decoration: none; }
+footer { color: var(--muted); font-size: 7.5pt; border-top: 1px solid var(--rule); margin-top: 2pt; padding-top: 2pt; }
+/* On screen, draw the sheet at full Letter height so empty space shows in screenshots. */
+@media screen { body { background:#e5e5e5; } .sheet { background:#fff; padding: .4in; margin: 0 auto;
+  min-height: 11in; } }
+@media screen and (max-width: 700px) { .cols { column-count: 1; } .sheet { padding: 16px; } }
+</style></head>
+<body><div class="sheet" style="--cols:3">
+<header><h1>Click: build a CLI</h1><span class="meta">Click 8.5.0 (installed, checked with CliRunner); repo main is 8.6.0.dev (docs read as text), 2026-11-04</span></header>
+<p class="one"><strong>If you only read one thing:</strong> decorate a function with <code>@click.command()</code>, stack <code>@click.option</code>/<code>@click.argument</code> above it, and parameter names become function arguments; test with <code>CliRunner</code>.</p>
+<p class="legend">Legend: ★ use daily · ⚠ mistake · → leads to</p>
+<div class="cols">
+<section><h2>Skeleton ★</h2>
+<pre><code>import click
+
+@click.group()
+def cli(): ...
+
+@cli.command()
+@click.option(&quot;-n&quot;, &quot;--name&quot;, default=&quot;W&quot;)
+@click.argument(&quot;files&quot;, nargs=-1)
+def hello(name, files):
+    click.echo(f&quot;hi {name}&quot;)
+
+if __name__ == &quot;__main__&quot;:
+    cli()</code></pre>
+<p>Install as a command: <code>app = "pkg.mod:cli"</code> under <code>[project.scripts]</code> <code>[docs-only]</code></p></section>
+<section><h2>Options ★</h2>
+<table><tr><th>Declare</th><th>Gives</th></tr><tr><td><code>"--a/--no-a"</code></td><td>bool on/off</td></tr><tr><td><code>is_flag=True</code></td><td>bool, default False</td></tr><tr><td><code>count=True</code> (<code>-vvv</code>)</td><td>int 3</td></tr><tr><td><code>multiple=True</code></td><td>tuple</td></tr><tr><td><code>nargs=2, type=int</code></td><td>tuple of 2</td></tr><tr><td><code>required=True</code></td><td>error if absent</td></tr><tr><td><code>show_default=True</code></td><td><code>[default: W]</code> in help</td></tr></table></section>
+<section><h2>Types</h2>
+<table><tr><th>click.*</th><th>Use</th></tr><tr><td><code>type=int</code> or <code>default=3</code></td><td>int, inferred</td></tr><tr><td><code>Choice(["a","b"])</code></td><td>fixed set</td></tr><tr><td><code>IntRange(1, 5)</code></td><td>bounded int</td></tr><tr><td><code>Path(exists=True)</code></td><td>file path, checked</td></tr><tr><td><code>File("r")</code></td><td>open file; <code>-</code> is stdin</td></tr></table></section>
+<section><h2>Value order ★</h2>
+<ol><li>command line</li><li><code>envvar=</code> (or <code>auto_envvar_prefix</code>)</li><li><code>default_map</code> on the context</li><li><code>default=</code></li></ol></section>
+<section><h2>Groups and context</h2>
+<ul><li><code>invoke_without_command=True</code> runs the group alone</li><li><code>ctx.obj</code> + <code>@click.pass_obj</code> share state</li><li><code>@click.pass_context</code> gives <code>ctx</code></li><li><code>ctx.invoke(other, n=7)</code> calls a command</li><li><code>chain=True</code> runs <code>x1 x2</code> in one call</li></ul></section>
+<section><h2>Input and output</h2>
+<ul><li><code>click.echo(msg, err=True)</code> writes stderr</li><li><code>prompt=True</code> asks if missing</li><li><code>hide_input=True, confirmation_prompt=True</code> for passwords</li><li><code>@click.confirmation_option()</code> adds <code>--yes</code></li><li><code>@click.version_option("1.2.3")</code> adds <code>--version</code></li></ul></section>
+<section><h2>Errors and exit codes</h2>
+<table><tr><th>Raise</th><th>Exit</th></tr><tr><td><code>UsageError("x")</code></td><td>2, shows usage</td></tr><tr><td><code>BadParameter("x")</code> in a callback</td><td>2</td></tr><tr><td><code>ClickException("x")</code></td><td>1, <code>Error: x</code></td></tr><tr><td><code>Abort()</code></td><td>1, <code>Aborted!</code></td></tr><tr><td><code>ctx.exit(4)</code></td><td>4</td></tr></table></section>
+<section><h2>Test with CliRunner ★</h2>
+<pre><code>from click.testing import CliRunner
+r = CliRunner().invoke(cli, [&quot;hello&quot;], env={&quot;K&quot;: &quot;v&quot;}, input=&quot;y\n&quot;)
+r.exit_code, r.output, r.stderr</code></pre>
+<p><code>isolated_filesystem()</code> gives a temp dir. <code>catch_exceptions=False</code> re-raises.</p></section>
+<section class="gotchas"><h2>Gotchas</h2>
+<ul><li>⚠ Group options go before the subcommand: <code>app --debug sub</code> works, <code>app sub --debug</code> is "No such option", because each level parses its own options.</li><li>⚠ A value starting with <code>-</code> is read as an option; put <code>--</code> first (<code>app -- -x</code>) because it looks like an option.</li><li>⚠ <code>def do_thing</code> becomes <code>do-thing</code>, and <code>do_thing</code> is "No such command", because Click converts underscores to dashes. <code>init_cmd</code> becomes <code>init</code>, too.</li><li>⚠ <code>Choice</code> with <code>case_sensitive=False</code> returns the declared value (<code>A</code> gives <code>a</code>); the default is case-sensitive and <code>LO</code> fails.</li><li>⚠ An empty env var (<code>TOK=""</code>) gives <code>None</code>, not <code>""</code>, because Click treats it as unset.</li><li>⚠ <code>multiple=True</code> with <code>default=["a"]</code> is replaced, not extended, when the user passes <code>--t b</code>.</li><li>⚠ An exception that is not a Click one gives exit 1 and a traceback; <code>CliRunner</code> stores it in <code>r.exception</code>.</li><li>⚠ Prompt text and <code>Aborted!</code> appear in <code>r.output</code>, not on a terminal, so assert on them there.</li></ul></section>
+</div></div></body></html>

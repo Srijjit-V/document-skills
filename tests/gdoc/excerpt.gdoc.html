@@ -1,0 +1,76 @@
+<!doctype html><html><head><meta charset="utf-8"></head><body><h1 style="font-family:Georgia;font-size:22.0pt;font-weight:bold;line-height:115%;margin:0.0pt 0 8.8pt 0">Start here: HTTPie CLI</h1>
+<p style="font-family:Georgia;font-size:11.0pt;line-height:135%;margin:0 0 7.0pt 0">HTTPie is a command-line HTTP client for talking to APIs: <span style="font-family:Roboto Mono">http</span> and <span style="font-family:Roboto Mono">https</span> send a request built from short <span style="font-family:Roboto Mono">key=value</span> arguments and print a colored, formatted response. This repo (version 3.2.4) is the Python package behind those commands and the <span style="font-family:Roboto Mono">httpie</span> management tool.</p>
+<pre style="font-family:Roboto Mono;font-size:10.0pt">git clone https://github.com/httpie/cli.git &amp;&amp; cd cli
+python3 -m venv venv &amp;&amp; ./venv/bin/pip install -e '.[dev]'
+./venv/bin/http --offline pie.dev/post name=Ada age:=36
+</pre>
+<p style="font-family:Georgia;font-size:11.0pt;line-height:135%;margin:0 0 7.0pt 0"><span style="font-family:Roboto Mono">--offline</span> builds and prints the request without sending it, which makes it the quickest way to see what your change does:</p>
+<pre style="font-family:Roboto Mono;font-size:10.0pt">POST /post HTTP/1.1
+Content-Type: application/json
+User-Agent: HTTPie/3.2.4
+...
+{&quot;name&quot;: &quot;Ada&quot;, &quot;age&quot;: 36}
+</pre>
+<p style="font-family:Georgia;font-size:11.0pt;line-height:135%;margin:0 0 7.0pt 0">Users install it with <span style="font-family:Roboto Mono">pip install httpie</span> (Python 3.7+). Full user docs live in <span style="font-family:Roboto Mono">docs/README.md</span> and at https://httpie.io/docs/cli.</p>
+<h2 style="font-family:Georgia;font-size:15.0pt;font-weight:bold;line-height:115%;margin:21.0pt 0 6.0pt 0">Repo map</h2>
+<table>
+<thead>
+<tr>
+<th>Path</th>
+<th>What lives there</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><span style="font-family:Roboto Mono">httpie/__main__.py</span>, <span style="font-family:Roboto Mono">httpie/core.py</span></td>
+<td>Entry point, error handling, the main request loop</td>
+</tr>
+<tr>
+<td><span style="font-family:Roboto Mono">httpie/cli/</span></td>
+<td>Argument definition (<span style="font-family:Roboto Mono">definition.py</span>), parsing (<span style="font-family:Roboto Mono">argparser.py</span>), request items (<span style="font-family:Roboto Mono">requestitems.py</span>), nested JSON syntax (<span style="font-family:Roboto Mono">nested_json/</span>)</td>
+</tr>
+<tr>
+<td><span style="font-family:Roboto Mono">httpie/client.py</span></td>
+<td>Turns parsed args into a <span style="font-family:Roboto Mono">requests</span> request, sends it, follows redirects</td>
+</tr>
+<tr>
+<td><span style="font-family:Roboto Mono">httpie/output/</span></td>
+<td>Formatting, colors, streaming to the terminal</td>
+</tr>
+<tr>
+<td><span style="font-family:Roboto Mono">httpie/sessions.py</span>, <span style="font-family:Roboto Mono">config.py</span></td>
+<td>Saved sessions and the config directory</td>
+</tr>
+<tr>
+<td><span style="font-family:Roboto Mono">httpie/plugins/</span></td>
+<td>Plugin base classes and loader</td>
+</tr>
+<tr>
+<td><span style="font-family:Roboto Mono">httpie/manager/</span></td>
+<td>The <span style="font-family:Roboto Mono">httpie cli ...</span> command (plugins, sessions, update checks)</td>
+</tr>
+<tr>
+<td><span style="font-family:Roboto Mono">tests/</span></td>
+<td>pytest suite; <span style="font-family:Roboto Mono">tests/utils/__init__.py</span> has the <span style="font-family:Roboto Mono">http()</span> test helper</td>
+</tr>
+</tbody>
+</table>
+<h2 style="font-family:Georgia;font-size:15.0pt;font-weight:bold;line-height:115%;margin:21.0pt 0 6.0pt 0">Day 1: run the tests</h2>
+<p style="font-family:Georgia;font-size:11.0pt;line-height:135%;margin:0 0 7.0pt 0">The <span style="font-family:Roboto Mono">Makefile</span> wraps the setup. <span style="font-family:Roboto Mono">make all</span> creates <span style="font-family:Roboto Mono">./venv</span>, installs <span style="font-family:Roboto Mono">.[dev]</span> and <span style="font-family:Roboto Mono">.[test]</span> plus an editable HTTPie, and runs the tests. After that:</p>
+<pre style="font-family:Roboto Mono;font-size:10.0pt">make test                 # pytest over httpie/ and tests/ (doctests included)
+make codestyle            # flake8, required to pass in CI
+python -m pytest tests/test_uploads.py::TestMultipartFormDataFileUpload::test_upload_ok
+</pre>
+<p style="font-family:Georgia;font-size:11.0pt;line-height:135%;margin:0 0 7.0pt 0">On Windows, CI skips <span style="font-family:Roboto Mono">make</span>: <span style="font-family:Roboto Mono">python -m pip install -e .[dev]</span>, then <span style="font-family:Roboto Mono">python -m pytest ./httpie ./tests</span>.</p>
+<p style="font-family:Georgia;font-size:11.0pt;line-height:135%;margin:0 0 7.0pt 0">Tests run against a local httpbin server from <span style="font-family:Roboto Mono">pytest-httpbin</span>, so most need no network. Two markers in <span style="font-family:Roboto Mono">pytest.ini</span> exist for restricted environments: <span style="font-family:Roboto Mono">requires_installation</span> and <span style="font-family:Roboto Mono">requires_external_processes</span>. To skip both:</p>
+<pre style="font-family:Roboto Mono;font-size:10.0pt">python -m pytest -m 'not requires_installation and not requires_external_processes'
+</pre>
+<p style="font-family:Georgia;font-size:11.0pt;line-height:135%;margin:0 0 7.0pt 0">On a fresh checkout with Python 3.11, <span style="font-family:Roboto Mono">charset-normalizer</span> 3.5.2 and <span style="font-family:Roboto Mono">requests</span> 2.34.2, the suite gave 999 passed and 14 failed. Twelve failures were in <span style="font-family:Roboto Mono">tests/test_plugins_cli.py</span> (it runs a real <span style="font-family:Roboto Mono">pip install</span> of a dummy plugin) and two were Big5 charset-detection cases in <span style="font-family:Roboto Mono">tests/test_encoding.py</span>. Compare with <span style="font-family:Roboto Mono">master</span> CI before chasing them.</p>
+<h2 style="font-family:Georgia;font-size:15.0pt;font-weight:bold;line-height:115%;margin:21.0pt 0 6.0pt 0">How a request flows</h2>
+<ol>
+<li><span style="font-family:Roboto Mono">httpie/__main__.py:main</span> calls <span style="font-family:Roboto Mono">httpie.core.main</span> (<span style="font-family:Roboto Mono">core.py:146</span>), which hands the parser from <span style="font-family:Roboto Mono">cli/definition.py:956</span> to <span style="font-family:Roboto Mono">raw_main</span> (<span style="font-family:Roboto Mono">core.py:32</span>).</li>
+<li><span style="font-family:Roboto Mono">raw_main</span> loads plugins, prepends <span style="font-family:Roboto Mono">default_options</span> from the config file, then parses args with <span style="font-family:Roboto Mono">HTTPieArgumentParser</span> (<span style="font-family:Roboto Mono">cli/argparser.py:138</span>). Request items like <span style="font-family:Roboto Mono">name=Ada</span> become headers, params, data, and files in <span style="font-family:Roboto Mono">RequestItems.from_args</span> (<span style="font-family:Roboto Mono">cli/requestitems.py:37</span>).</li>
+<li><span style="font-family:Roboto Mono">program</span> (<span style="font-family:Roboto Mono">core.py:170</span>) iterates over <span style="font-family:Roboto Mono">collect_messages</span> (<span style="font-family:Roboto Mono">client.py:43</span>). That generator loads the session, builds kwargs (<span style="font-family:Roboto Mono">make_request_kwargs</span>, <span style="font-family:Roboto Mono">client.py:325</span>), yields the prepared request, sends it unless <span style="font-family:Roboto Mono">--offline</span>, follows redirects, and saves the session afterwards.</li>
+<li>Each yielded request or response goes to <span style="font-family:Roboto Mono">write_message</span> (<span style="font-family:Roboto Mono">output/writer.py:27</span>) for formatting. With <span style="font-family:Roboto Mono">--check-status</span> or <span style="font-family:Roboto Mono">--download</span>, <span style="font-family:Roboto Mono">status.py</span> maps the HTTP status to the exit code.</li>
+</ol>
+<p style="font-family:Georgia;font-size:11.0pt;line-height:135%;margin:0 0 7.0pt 0">To add an option, define it in <span style="font-family:Roboto Mono">cli/definition.py</span>, handle it in <span style="font-family:Roboto Mono">argparser.py</span> or <span style="font-family:Roboto Mono">client.py</span>, and test it with the <span style="font-family:Roboto Mono">http()</span> helper, using <span style="font-family:Roboto Mono">--offline</span> when no response is needed.</p></body></html>

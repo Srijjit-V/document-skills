@@ -1,0 +1,151 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Scrapy Cheat Sheet</title>
+<style>
+  @page { size: Letter; margin: 0.4in; }
+  :root { --ink:#1b1f24; --muted:#57606a; --accent:#0b6e4f; --code:#f3f5f7; --rule:#d0d7de; }
+  * { box-sizing: border-box; }
+  html, body { margin:0; background:#fff; color:var(--ink); }
+  body { font: 8.3pt/1.3 -apple-system, "Segoe UI", Helvetica, Arial, sans-serif; }
+  .page { width: 7.7in; margin: 0 auto; }
+  header { display:flex; justify-content:space-between; align-items:baseline; border-bottom:2px solid var(--accent); padding-bottom:3px; margin-bottom:5px; }
+  header h1 { font-size:15pt; margin:0; color:var(--accent); }
+  header span { color:var(--muted); font-size:7.5pt; }
+  .cols { column-count:2; column-gap:0.22in; }
+  section { break-inside: avoid; margin:0 0 5px; }
+  h2 { font-size:9.2pt; margin:0 0 2px; color:var(--accent); text-transform:uppercase; letter-spacing:.03em; border-bottom:1px solid var(--rule); }
+  pre, code { font-family: "SF Mono", Menlo, Consolas, monospace; font-size:7.3pt; }
+  pre { background:var(--code); margin:0 0 3px; padding:3px 4px; white-space:pre-wrap; word-break:break-word; border-radius:2px; }
+  code { background:var(--code); padding:0 1px; }
+  p { margin:0 0 3px; }
+  table { width:100%; border-collapse:collapse; margin-bottom:3px; table-layout:fixed; } td { overflow-wrap:anywhere; } td:last-child, th:last-child { width:32%; }
+  td, th { padding:1px 2px; border-bottom:1px solid var(--rule); vertical-align:top; text-align:left; }
+  th { font-size:7pt; color:var(--muted); }
+  .muted { color:var(--muted); }
+  .flow { font-size:7.2pt; }
+  @media screen { body { padding:16px 0; background:#e9ecef; } .page { background:#fff; padding:0.4in; box-shadow:0 1px 6px rgba(0,0,0,.15); max-width:100%; } }
+  @media screen and (max-width: 700px) { .cols { column-count:1; } .page { width:auto; margin:0 16px; } }
+  @media print { body { -webkit-print-color-adjust:exact; print-color-adjust:exact; } }
+</style>
+</head>
+<body>
+<div class="page">
+<header><h1>Scrapy 2.19 Cheat Sheet</h1><span>Python 3.11+ · <code>pip install scrapy</code> · docs.scrapy.org</span></header>
+<div class="cols">
+
+<section><h2>Project &amp; CLI</h2>
+<pre>scrapy startproject myproj &amp;&amp; cd myproj
+scrapy genspider [-t basic|crawl|csvfeed|xmlfeed] \
+  name example.com
+scrapy crawl name -O out.json   # -o appends
+scrapy crawl name -o out.csv:csv
+scrapy crawl name -a cat=books -s LOG_LEVEL=INFO
+scrapy runspider spider.py -O out.jsonl
+scrapy shell "https://example.com"
+scrapy fetch | view | parse &lt;url&gt;
+scrapy parse --spider=NAME -c cb &lt;url&gt;
+scrapy list | check NAME | bench
+scrapy settings --get NAME | version -v
+scrapy genrequest 'curl ...'
+scrapy crawl big -s JOBDIR=crawls/1</pre>
+<p class="muted">JOBDIR: Ctrl-C once to pause, rerun to resume. Global: <code>-L LEVEL</code> <code>--nolog</code> <code>--pdb</code></p>
+</section>
+
+<section><h2>Spider</h2>
+<pre>import scrapy
+class Q(scrapy.Spider):
+    name = "q"
+    allowed_domains = ["example.com"]
+    start_urls = ["https://example.com/"]
+    custom_settings = {"DOWNLOAD_DELAY": 1}
+
+    async def start(self):  # optional
+        yield scrapy.Request(self.start_urls[0])
+
+    def parse(self, response):  # or async def
+        for q in response.css("div.quote"):
+            yield {"text": q.css("span::text").get()}
+        yield from response.follow_all(
+            css="a.next", callback=self.parse)</pre>
+<p>Generic: <code>CrawlSpider</code> + <code>Rule(LinkExtractor(allow=r"/p/"), callback="parse_item", follow=True)</code>, <code>SitemapSpider</code>, <code>XMLFeedSpider</code>, <code>CSVFeedSpider</code>.</p>
+</section>
+
+<section><h2>Selectors</h2>
+<table>
+<tr><td><code>response.css("h1::text").get()</code></td><td>first / None</td></tr>
+<tr><td><code>.getall()</code></td><td>all matches</td></tr>
+<tr><td><code>css("a::attr(href)")</code></td><td>attribute</td></tr>
+<tr><td><code>xpath("//h1/text()")</code></td><td>XPath</td></tr>
+<tr><td><code>.re(r"\d+")</code>, <code>.re_first()</code></td><td>regex</td></tr>
+<tr><td><code>response.json()</code></td><td>JSON body</td></tr>
+<tr><td><code>response.urljoin(href)</code></td><td>absolute URL</td></tr>
+</table>
+</section>
+
+<section><h2>Requests</h2>
+<p><code>Request(url, callback, errback, method, headers, cookies, meta, cb_kwargs, dont_filter, priority)</code></p>
+<p><code>FormRequest.from_response(resp, formdata={})</code> · <code>JsonRequest(url, data={})</code> · <code>response.follow(link, cb)</code></p>
+<p><b>meta:</b> <code>dont_redirect</code> <code>dont_retry</code> <code>handle_httpstatus_list</code> <code>proxy</code> <code>download_timeout</code> <code>max_retry_times</code> <code>cookiejar</code></p>
+</section>
+
+<section><h2>Items &amp; Pipelines</h2>
+<pre>class P(scrapy.Item):
+    name = scrapy.Field()
+
+class Clean:
+    def process_item(self, item):
+        return item   # raise DropItem to discard
+
+ITEM_PIPELINES = {"myproj.pipelines.Clean": 300}</pre>
+<p>Lower number runs first. Items: dict, dataclass, attrs, <code>scrapy.Item</code> (via <code>ItemAdapter</code>). Media: <code>FilesPipeline</code>, <code>ImagesPipeline</code>.</p>
+</section>
+
+<section><h2>Key settings (default)</h2>
+<table>
+<tr><th>Setting</th><th>Default</th></tr>
+<tr><td>CONCURRENT_REQUESTS</td><td>16</td></tr>
+<tr><td>CONCURRENT_REQUESTS_PER_DOMAIN</td><td>8*</td></tr>
+<tr><td>DOWNLOAD_DELAY</td><td>0*</td></tr>
+<tr><td>ROBOTSTXT_OBEY</td><td>False*</td></tr>
+<tr><td>DOWNLOAD_TIMEOUT</td><td>180 s</td></tr>
+<tr><td>RETRY_TIMES</td><td>2</td></tr>
+<tr><td>AUTOTHROTTLE_ENABLED</td><td>False</td></tr>
+<tr><td>HTTPCACHE_ENABLED</td><td>False</td></tr>
+<tr><td>DEPTH_LIMIT / CLOSESPIDER_ITEMCOUNT</td><td>0 (off)</td></tr>
+<tr><td>LOG_LEVEL</td><td>DEBUG</td></tr>
+<tr><td>TWISTED_REACTOR_ENABLED</td><td>True</td></tr>
+</table>
+<p class="muted">*New projects set ROBOTSTXT_OBEY=True, PER_DOMAIN=1, DELAY=1.</p>
+<p><b>Precedence:</b> <code>-s</code> › spider <code>custom_settings</code> › <code>settings.py</code> › add-ons › defaults. Disable built-in component: set to <code>None</code>.</p>
+<pre>FEEDS = {"out/%(name)s.jsonl":
+  {"format": "jsonlines", "overwrite": True}}</pre>
+</section>
+
+<section><h2>From a script</h2>
+<pre>from scrapy.crawler import AsyncCrawlerProcess
+from scrapy.utils.project import get_project_settings
+p = AsyncCrawlerProcess(get_project_settings())
+p.crawl("q")
+p.start()  # blocks</pre>
+</section>
+
+<section><h2>Data flow</h2>
+<p class="flow">Spider <code>start()</code> → spider mw → <b>Engine</b> → <b>Scheduler</b> (dupefilter) → downloader mw → <b>Downloader</b>/handlers → response → downloader mw → spider mw → callback → items → <b>Pipelines</b> · requests → Scheduler</p>
+</section>
+
+<section><h2>Contributing (repo)</h2>
+<pre>pip install -e . tox pre-commit
+pre-commit install
+tox -e py -- tests/test_crawl.py
+pre-commit run --all-files
+tox -e mypy; tox -e pylint; tox -e docs</pre>
+<p>Tests: mock server, <code>example.com</code> only, parametrize, <code>build_from_crawler()</code>. Don't edit <code>docs/news.rst</code>. Never rebase a reviewed PR.</p>
+</section>
+
+</div>
+</div>
+</body>
+</html>

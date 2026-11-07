@@ -1,0 +1,183 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Click Cheat Sheet</title>
+<style>
+  @page { size: letter; margin: 0.35in; }
+  :root { --ink:#1a1a1a; --muted:#555; --rule:#ccc; --accent:#1f5f8b; --code:#f3f4f6; }
+  * { box-sizing: border-box; }
+  html, body { margin:0; background:#fff; color:var(--ink); }
+  body { font: 7.6pt/1.3 -apple-system, "Segoe UI", Helvetica, Arial, sans-serif;
+         -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  .page { width: 7.8in; margin: 0 auto; }
+  @media screen { body { background:#e9e9e9; padding:16px 0; }
+    .page { background:#fff; padding:0.35in; width:8.5in; min-height:11in; box-shadow:0 1px 4px rgba(0,0,0,.2); } }
+  header { display:flex; justify-content:space-between; align-items:baseline;
+           border-bottom:2px solid var(--accent); padding-bottom:2px; margin-bottom:5px; }
+  h1 { font-size:13pt; margin:0; color:var(--accent); }
+  header span { color:var(--muted); font-size:7pt; }
+  .cols { column-count:3; column-gap:0.18in; column-rule:1px solid #e3e3e3; }
+  section { break-inside: avoid; margin-bottom:5px; }
+  h2 { font-size:8pt; margin:0 0 2px; color:var(--accent); text-transform:uppercase; letter-spacing:.03em;
+       border-bottom:1px solid var(--rule); }
+  pre, code { font-family: "SF Mono", Menlo, Consolas, monospace; font-size:6.8pt; }
+  code { background:var(--code); padding:0 1.5px; border-radius:2px; }
+  pre { font-size:6.3pt; background:var(--code); margin:2px 0; padding:3px 4px; line-height:1.22; white-space:pre; overflow:hidden; border-radius:2px; }
+  pre code { background:none; padding:0; font-size:inherit; }
+  table { width:100%; border-collapse:collapse; }
+  td { vertical-align:top; padding:1px 2px; border-bottom:1px solid #eee; }
+  table { table-layout:fixed; }
+  td:first-child { color:var(--muted); width:28%; padding-right:4px; }
+  table.wide td:first-child { width:58%; color:var(--ink); }
+  td code { overflow-wrap:anywhere; }
+  table.grp td:first-child { width:66%; }
+  p, ul { margin:2px 0; }
+  ul { padding-left:10px; }
+  li { margin:0; }
+  .c { color:#6a737d; }
+</style>
+</head>
+<body>
+<div class="page">
+<header><h1>Click Cheat Sheet</h1><span>Click 8.5+ · <code>pip install click</code> · <code>import click</code></span></header>
+<div class="cols">
+
+<section><h2>Minimal command</h2>
+<pre><code>@click.command()
+@click.argument("name")
+@click.option("--count", "-c", default=1,
+    show_default=True, help="Repeats.")
+def hello(name, count):
+    """Greet NAME."""   <span class="c"># = --help text</span>
+    for _ in range(count):
+        click.echo(f"Hello {name}")
+
+if __name__ == "__main__":
+    hello()</code></pre></section>
+
+<section><h2>Groups &amp; subcommands</h2>
+<pre><code>@click.group()
+@click.option("-v", "--verbose", count=True)
+@click.pass_context
+def cli(ctx, verbose):
+    ctx.ensure_object(dict)
+    ctx.obj["verbose"] = verbose
+
+@cli.command()       <span class="c"># name "sync"</span>
+@click.pass_obj      <span class="c"># gets ctx.obj</span>
+def sync(obj): ...
+
+cli.add_command(other, name="other")</code></pre>
+<table class="wide grp">
+<tr><td><code>invoke_without_command=True</code></td><td>Group runs alone; check <code>ctx.invoked_subcommand</code></td></tr>
+<tr><td><code>chain=True</code></td><td><code>cli a b c</code> runs several</td></tr>
+<tr><td><code>@cli.result_callback()</code></td><td>Post-process return values</td></tr>
+<tr><td><code>@click.command("my-name")</code></td><td>Override name</td></tr>
+</table>
+<p><code>_</code> becomes <code>-</code>: <code>def dry_run</code> → <code>dry-run</code>.</p></section>
+
+<section><h2>Arguments (positional)</h2>
+<table>
+<tr><td>Required</td><td><code>@click.argument("src")</code></td></tr>
+<tr><td>Optional</td><td><code>argument("dst", required=False)</code></td></tr>
+<tr><td>Variadic</td><td><code>argument("files", nargs=-1)</code> → tuple</td></tr>
+<tr><td>Fixed count</td><td><code>argument("pt", nargs=2, type=float)</code></td></tr>
+<tr><td>From env</td><td><code>argument("src", envvar="SRC")</code></td></tr>
+</table>
+<p>Arguments take <code>help=</code> since 8.5; otherwise describe them in the docstring.</p></section>
+
+<section><h2>Options</h2>
+<table>
+<tr><td>Value + default</td><td><code>option("--n", default=1)</code> (type inferred)</td></tr>
+<tr><td>Required</td><td><code>required=True</code></td></tr>
+<tr><td>Flag</td><td><code>option("--force", is_flag=True)</code></td></tr>
+<tr><td>On/off pair</td><td><code>option("--color/--no-color", default=True)</code></td></tr>
+<tr><td>Repeatable</td><td><code>multiple=True</code> → tuple</td></tr>
+<tr><td>Counter <code>-vvv</code></td><td><code>count=True</code></td></tr>
+<tr><td>Feature switch</td><td>2 options, same dest, <code>flag_value="upper"</code>/<code>"lower"</code></td></tr>
+<tr><td>Tuple value</td><td><code>nargs=2</code> or <code>type=(str, int)</code></td></tr>
+<tr><td>Env var</td><td><code>envvar="APP_TOKEN"</code>, or <code>cli(auto_envvar_prefix="APP")</code></td></tr>
+<tr><td>Ask if missing</td><td><code>prompt=True</code> / <code>prompt="Your name"</code></td></tr>
+<tr><td>Password</td><td><code>hide_input=True, confirmation_prompt=True</code> or <code>@click.password_option()</code></td></tr>
+<tr><td>Help display</td><td><code>show_default=True</code>, <code>hidden=True</code></td></tr>
+<tr><td>Python name</td><td><code>option("--from", "from_")</code></td></tr>
+<tr><td>Deprecate</td><td><code>deprecated=True</code> or <code>="use --x"</code></td></tr>
+</table>
+<p>Built-ins: <code>@click.version_option()</code> (auto-detects package version), <code>@click.confirmation_option(prompt="Sure?")</code>, <code>@click.help_option("-h", "--help")</code>, or <code>context_settings={"help_option_names": ["-h", "--help"]}</code>.</p></section>
+
+<section><h2>Types</h2>
+<table class="wide">
+<tr><td><code>str int float bool</code></td><td>Plain Python types work</td></tr>
+<tr><td><code>Choice(["a","b"], case_sensitive=False)</code></td><td>Also takes an <code>Enum</code></td></tr>
+<tr><td><code>IntRange(0, 10, clamp=True)</code></td><td>Bounds; also <code>FloatRange</code></td></tr>
+<tr><td><code>Path(exists=True, dir_okay=False, path_type=pathlib.Path)</code></td><td>Validates, doesn't open</td></tr>
+<tr><td><code>File("rb")</code>, <code>File("w", lazy=True)</code></td><td>Opens; <code>-</code> = stdin/stdout</td></tr>
+<tr><td><code>DateTime(["%Y-%m-%d"])</code>, <code>UUID</code></td><td>→ <code>datetime</code>, <code>uuid.UUID</code></td></tr>
+</table>
+<p>Custom: subclass <code>click.ParamType</code>, set <code>name</code>, implement <code>convert(value, param, ctx)</code>, call <code>self.fail(msg, param, ctx)</code> on bad input.</p></section>
+
+<section><h2>Validation callback</h2>
+<pre><code>def check(ctx, param, value):
+    if value % 2:
+        raise click.BadParameter("even only")
+    return value
+
+@click.option("--n", type=int,
+              callback=check)</code></pre>
+<p><code>is_eager=True</code> + <code>expose_value=False</code>: process first, keep out of function args (how <code>--version</code> works).</p></section>
+
+<section><h2>Output &amp; input</h2>
+<table>
+<tr><td>Print</td><td><code>click.echo(msg)</code>; stderr: <code>err=True</code></td></tr>
+<tr><td>Color</td><td><code>click.secho("ok", fg="green", bold=True)</code>, <code>click.style()</code></td></tr>
+<tr><td>Ask</td><td><code>click.prompt("Port", type=int, default=8080)</code></td></tr>
+<tr><td>Yes/no</td><td><code>click.confirm("Continue?", abort=True)</code></td></tr>
+<tr><td>Pager</td><td><code>click.echo_via_pager(text)</code></td></tr>
+<tr><td>Editor</td><td><code>click.edit("initial text")</code></td></tr>
+<tr><td>Progress</td><td><code>with click.progressbar(items, label="Work") as bar:</code></td></tr>
+<tr><td>Open file/URL</td><td><code>click.launch(path_or_url)</code></td></tr>
+<tr><td>Config dir</td><td><code>click.get_app_dir("myapp")</code></td></tr>
+</table></section>
+
+<section><h2>Errors &amp; exit codes</h2>
+<table class="wide">
+<tr><td><code>ClickException(msg)</code></td><td><code>Error: msg</code>, exit 1</td></tr>
+<tr><td><code>UsageError(msg)</code></td><td>usage + error, exit 2</td></tr>
+<tr><td><code>BadParameter(msg)</code></td><td>names the bad param, exit 2</td></tr>
+<tr><td><code>Abort()</code></td><td><code>Aborted!</code>, exit 1</td></tr>
+<tr><td><code>ctx.exit(code)</code></td><td>exit with <code>code</code></td></tr>
+</table></section>
+
+<section><h2>Testing</h2>
+<pre><code>from click.testing import CliRunner
+
+def test_sync(tmp_path):
+    r = CliRunner().invoke(
+        cli, ["sync", str(tmp_path)],
+        env={"APP_TOKEN": "t"}, input="y\n")
+    assert r.exit_code == 0, r.output
+    assert "done" in r.stdout
+    <span class="c"># also r.stderr, r.output</span></code></pre>
+<p><code>r.exception</code> holds an uncaught exception. Use <code>tmp_path</code>; <code>isolated_filesystem()</code> is deprecated in 8.5.</p></section>
+
+<section><h2>Packaging &amp; completion</h2>
+<pre><code><span class="c"># pyproject.toml</span>
+[project.scripts]
+mytool = "mytool.cli:cli"</code></pre>
+<p>Completion (bash, zsh, fish, powershell):<br><code>_MYTOOL_COMPLETE=zsh_source mytool &gt; ~/.mytool-complete.zsh</code>, then source it from your shell rc.</p></section>
+
+<section><h2>Gotchas</h2>
+<ul>
+<li>Parameter names must match function args (<code>--dry-run</code> → <code>dry_run</code>).</li>
+<li>Only one <code>nargs=-1</code> argument per command; it yields <code>()</code> when nothing is passed.</li>
+<li><code>default</code> on a <code>multiple=True</code> option must be a list/tuple.</li>
+<li><code>ctx.obj</code> is <code>None</code> until set: call <code>ctx.ensure_object(dict)</code>.</li>
+<li>Use <code>click.echo</code>, not <code>print()</code>: it respects <code>CliRunner</code> capture and strips color when piped.</li>
+</ul></section>
+
+</div>
+</div>
+</body>
+</html>

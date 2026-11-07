@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Scrapy cram sheet</title>
+<style>
+@page { size: letter; margin: 0.4in; }
+:root { --ink:#111; --muted:#555; --rule:#bbb; --accent:#0b5cad; --warn:#a33; --box:#f6f7f9; }
+* { box-sizing: border-box; }
+body { font: 8.5pt/1.3 -apple-system, "Segoe UI", Helvetica, Arial, sans-serif; color: var(--ink);
+       background:#fff; margin: 0; }
+.sheet { max-width: 7.7in; margin: 0 auto; }
+header { display:flex; align-items: baseline; justify-content: space-between;
+         border-bottom: 2px solid var(--ink); margin-bottom: 4pt; }
+h1 { font-size: 15pt; margin: 0 0 2pt; }
+.meta { color: var(--muted); font-size: 8pt; }
+.one { background: var(--ink); color:#fff; padding: 4pt 6pt; margin: 0 0 3pt; font-size: 9.5pt; border-radius: 3pt; }
+.one strong { color: #ffd84d; }
+.one code { background: #333; color: #ffd84d; }
+.legend { color: var(--muted); font-size: 8pt; margin: 0 0 5pt; }
+.cols { column-count: var(--cols); column-gap: 8pt; }
+section { break-inside: avoid; background: var(--box); border: 1px solid var(--rule);
+          border-radius: 3pt; padding: 3pt 5pt 4pt; margin: 0 0 6pt; }
+section.gotchas { border-color: var(--warn); background: #fff6f5; }
+h2 { font-size: 9.5pt; margin: 0 0 2pt; color: var(--accent); text-transform: uppercase; letter-spacing: .03em; }
+section.gotchas h2 { color: var(--warn); }
+h3 { font-size: 8.5pt; margin: 3pt 0 1pt; }
+p { margin: 1pt 0 2pt; }
+ul, ol { margin: 1pt 0 2pt; padding-left: 11pt; }
+li { margin: 0 0 1pt; }
+table { border-collapse: collapse; width: 100%; margin: 1pt 0 2pt; table-layout: fixed; }
+th, td { text-align: left; vertical-align: top; padding: 1pt 3pt; border-bottom: 1px solid #ddd; }
+th { font-size: 8pt; color: var(--muted); font-weight: 600; }
+code { font: 8pt/1.25 ui-monospace, Menlo, Consolas, monospace; background:#e9ecf0; padding: 0 2pt; border-radius: 2pt;
+       overflow-wrap: anywhere; }
+td { overflow-wrap: anywhere; }
+pre { background:#e9ecf0; padding: 2pt 4pt; margin: 1pt 0 2pt; white-space: pre-wrap; border-radius: 2pt; }
+pre code { background: none; padding: 0; }
+a { color: var(--accent); text-decoration: none; }
+footer { color: var(--muted); font-size: 7.5pt; border-top: 1px solid var(--rule); margin-top: 2pt; padding-top: 2pt; }
+@media screen { body { background:#e5e5e5; } .sheet { background:#fff; padding: .4in; margin: 16px auto;
+  box-shadow: 0 1px 4px rgba(0,0,0,.2); } }
+@media screen and (max-width: 700px) { .cols { column-count: 1; } .sheet { padding: 16px; } }
+</style></head>
+<body><div class="sheet" style="--cols:3">
+<header><h1>Scrapy cram sheet</h1><span class="meta">scrapy/scrapy@2.19.0 · 2026-11-02</span></header>
+<p class="one"><strong>If you only read one thing:</strong> use <code>-O out.json</code> (overwrite), not <code>-o</code>. In a project, <code>-o</code> onto an existing file logs an ERROR and the items are lost.</p>
+<p class="legend">Legend: ★ most used · ⚠ gotcha</p>
+<div class="cols">
+<section><h2>Get started</h2>
+<pre><code>pip install scrapy
+scrapy startproject quotes
+cd quotes
+scrapy genspider qs site.com
+scrapy crawl qs -O out.json
+# no project needed:
+scrapy runspider s.py \
+  -O o.json</code></pre>
+<p>Needs Python 3.11+.</p></section>
+<section><h2>Spider skeleton</h2>
+<pre><code>import scrapy
+
+class QS(scrapy.Spider):
+  name = &quot;qs&quot;
+  allowed_domains = [
+    &quot;site.com&quot;]
+  start_urls = [
+    &quot;https://site.com/&quot;]
+
+  def parse(self, r):
+    for q in r.css(&quot;p&quot;):
+      yield {&quot;t&quot;: q.css(
+        &quot;b::text&quot;).get()}
+    yield from r.follow_all(
+      css=&quot;a.next&quot;)</code></pre>
+<p><code>follow_all</code> defaults to <code>callback=self.parse</code>. Custom first requests: <code>async def start(self)</code> (2.13+).</p></section>
+<section><h2>Daily commands</h2>
+<table><tr><th>Command</th><th>Does</th></tr><tr><td><code>crawl NAME</code> ★</td><td>run project spider</td></tr><tr><td><code>shell URL</code> ★</td><td>try selectors live</td></tr><tr><td><code>list</code></td><td>spider names</td></tr><tr><td><code>fetch URL</code></td><td>print body as Scrapy sees it</td></tr><tr><td><code>view URL</code></td><td>open that body in a browser</td></tr><tr><td><code>parse URL -c parse</code></td><td>run one callback</td></tr><tr><td><code>genrequest "curl …"</code></td><td>curl → <code>Request(...)</code></td></tr></table>
+<p><code>crawl</code>, <code>list</code>, <code>check</code>, <code>parse</code>, <code>edit</code> need a project dir.</p></section>
+<section><h2>Crawl flags</h2>
+<table><tr><th>Flag</th><th>Effect</th></tr><tr><td><code>-O f.json</code> ★</td><td>overwrite feed</td></tr><tr><td><code>-o f.jsonl</code></td><td>append feed</td></tr><tr><td><code>-a cat=books</code></td><td>spider attr <code>self.cat</code></td></tr><tr><td><code>-s NAME=VAL</code></td><td>override a setting</td></tr><tr><td><code>-L INFO</code></td><td>log level (default DEBUG)</td></tr><tr><td><code>--pdb</code></td><td>debugger on failure</td></tr></table></section>
+<section><h2>Selectors</h2>
+<pre><code>r = response
+r.css(&quot;a::text&quot;).get()
+  # first match or None
+r.xpath(&quot;//a/@href&quot;).getall()
+  # list of all hrefs
+r.xpath(&quot;//h1/text()&quot;).get()
+r.follow(href, cb)
+  # relative URLs OK</code></pre></section>
+<section><h2>Defaults: library → new project</h2>
+<ul><li><code>ROBOTSTXT_OBEY</code>: False → True</li><li><code>CONCURRENT_REQUESTS_PER_DOMAIN</code>: 8 → 1</li><li><code>DOWNLOAD_DELAY</code>: 0 → 1 s (±50% jitter)</li><li><code>FEED_MODE</code>: None → <code>create</code></li></ul>
+<p>A spider run outside a project gets the library column. Check: <code>scrapy settings --get NAME</code></p></section>
+<section class="gotchas"><h2>Gotchas</h2>
+<ul><li>⚠ Links outside <code>allowed_domains</code> drop silently (DEBUG log only), because <code>OffsiteMiddleware</code> filters them. Check stat <code>offsite/filtered</code>.</li><li>⚠ A URL seen once is never fetched again: the dupefilter drops it. Use <code>Request(url, dont_filter=True)</code>.</li><li>⚠ Every crawl opens Telnet (:6023) and a RemoteControl HTTP server that runs code. Off: set <code>TELNETCONSOLE_ENABLED</code> and <code>REMOTE_CONTROL_ENABLED</code> to False.</li><li>⚠ No-reactor mode (<code>TWISTED_REACTOR_ENABLED</code> off) is experimental, uses aiohttp, and can't be set per spider.</li></ul></section>
+<section><h2>Tune and resume</h2>
+<pre><code>-s JOBDIR=crawls/r1
+  # Ctrl-C, rerun to resume
+-s HTTPCACHE_ENABLED=1
+  # cache: .scrapy/httpcache
+-s AUTOTHROTTLE_ENABLED=1
+  # delay follows latency
+-s CLOSESPIDER_ITEMCOUNT=50
+  # stop after 50 items</code></pre></section>
+<section><h2>Hack on Scrapy</h2>
+<pre><code>pip install -e .
+pip install tox pre-commit
+tox -e py -- tests/test_x.py
+pre-commit run --all-files
+tox -e mypy &amp;&amp; tox -e pylint</code></pre>
+<p>All defaults: <code>default_settings.py</code> in <code>scrapy/settings/</code>. Engine: <code>scrapy/core/engine.py</code>.</p></section>
+</div></div></body></html>

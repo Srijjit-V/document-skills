@@ -1,0 +1,269 @@
+{
+ "minutes": {
+  "type": "minutes",
+  "preset": "compact",
+  "sources": [
+   "inputs/minutes/transcript.txt"
+  ],
+  "questions": [
+   {
+    "q": "How much was approved for raised beds?",
+    "answer_regex": "\\$2,400|2,400"
+   },
+   {
+    "q": "What was the vote?",
+    "answer_regex": "4\\s*(\u2013|-|to)\\s*1|4 in favor|four (in favor|to one)|4 for"
+   },
+   {
+    "q": "Who orders the lumber and by when?",
+    "answer_regex": "Maria.{0,160}Nov(ember)?\\.? 15|Nov(ember)?\\.? 15.{0,160}Maria"
+   },
+   {
+    "q": "When is the next meeting?",
+    "answer_regex": "Nov(ember)?\\.? 18"
+   },
+   {
+    "q": "What happened with the tool shed?",
+    "answer_regex": "shed.{0,100}(spring|March)|(spring|March).{0,100}shed"
+   }
+  ]
+ },
+ "memo": {
+  "type": "memo",
+  "preset": "memo",
+  "sources": [
+   "inputs/memo/notes.txt"
+  ],
+  "questions": [
+   {
+    "q": "What is the monthly saving?",
+    "answer_regex": "\\$?1,6[67]\\d|\\$?1,670"
+   },
+   {
+    "q": "What is the main risk?",
+    "answer_regex": "3\\s?pm"
+   },
+   {
+    "q": "How long is the pilot?",
+    "answer_regex": "60[- ]day|60 days"
+   },
+   {
+    "q": "What approval date is needed?",
+    "answer_regex": "Nov(ember)?\\.? 15"
+   },
+   {
+    "q": "What is NorthRoute's average cost per parcel?",
+    "answer_regex": "\\$6\\.95"
+   }
+  ]
+ },
+ "cover-letter": {
+  "type": "cover-letter",
+  "preset": "letter",
+  "sources": [
+   "inputs/cover-letter/posting.txt",
+   "inputs/cover-letter/background.txt"
+  ],
+  "questions": [
+   {
+    "q": "Which role is applied for?",
+    "answer_regex": "Program Coordinator"
+   },
+   {
+    "q": "Who is it addressed to?",
+    "answer_regex": "Marcus Hale|Mr\\. Hale"
+   },
+   {
+    "q": "How many events were organized?",
+    "answer_regex": "\\b12\\b.{0,30}events|events.{0,30}\\b12\\b"
+   },
+   {
+    "q": "How many volunteers were trained?",
+    "answer_regex": "\\b6\\b.{0,30}volunteers|volunteers.{0,30}\\b6\\b|six volunteers"
+   },
+   {
+    "q": "Is Spanish mentioned?",
+    "answer_regex": "Spanish"
+   }
+  ]
+ },
+ "lab-report": {
+  "type": "lab-report",
+  "preset": "report",
+  "sources": [
+   "inputs/lab-report/data.csv",
+   "inputs/lab-report/notes.txt"
+  ],
+  "questions": [
+   {
+    "q": "What mean value of g was found?",
+    "answer_regex": "9\\.78\\d*"
+   },
+   {
+    "q": "What was the percent error against 9.81?",
+    "answer_regex": "0\\.2[6-9]\\d*\\s?%|0\\.3\\d?\\s?%|0\\.27"
+   },
+   {
+    "q": "What release angle was used?",
+    "answer_regex": "10\\s?(degrees|\u00b0|deg)"
+   },
+   {
+    "q": "How many oscillations per trial?",
+    "answer_regex": "10 (full )?oscillations"
+   },
+   {
+    "q": "Name a source of error.",
+    "answer_regex": "reaction|stopwatch|bob hit|stretch"
+   }
+  ]
+ },
+ "study-guide": {
+  "type": "study-guide",
+  "preset": "report",
+  "sources": [
+   "inputs/study/chapter-notes.md"
+  ],
+  "questions": [
+   {
+    "q": "What percent of Earth's water is fresh?",
+    "answer_regex": "2\\.5\\s?%"
+   },
+   {
+    "q": "What is transpiration?",
+    "answer_regex": "transpiration.{0,100}(plants|leaves)|(plants|leaves).{0,100}transpiration"
+   },
+   {
+    "q": "What is a watershed?",
+    "answer_regex": "watershed.{0,120}(drain|outlet)|(drain|outlet).{0,120}watershed"
+   },
+   {
+    "q": "Residence time of atmospheric water?",
+    "answer_regex": "9 days"
+   },
+   {
+    "q": "When is the exam?",
+    "answer_regex": "Nov(ember)?\\.? 6|Friday"
+   }
+  ]
+ },
+ "cram-sheet": {
+  "type": "study-guide",
+  "preset": null,
+  "sources": [
+   "inputs/study/chapter-notes.md"
+  ],
+  "questions": [
+   {
+    "q": "What percent of Earth's water is fresh?",
+    "answer_regex": "2\\.5\\s?%"
+   },
+   {
+    "q": "What is transpiration?",
+    "answer_regex": "transpiration.{0,100}(plants|leaves)|(plants|leaves).{0,100}transpiration"
+   },
+   {
+    "q": "What is a watershed?",
+    "answer_regex": "watershed.{0,120}(drain|outlet)|(drain|outlet).{0,120}watershed"
+   },
+   {
+    "q": "Residence time of atmospheric water?",
+    "answer_regex": "9 days"
+   },
+   {
+    "q": "When is the exam?",
+    "answer_regex": "Nov(ember)?\\.? 6|Friday"
+   }
+  ]
+ },
+ "essay": {
+  "type": "essay",
+  "preset": "academic",
+  "sources": [
+   "inputs/essay/sources.md",
+   "inputs/essay/assignment.txt"
+  ],
+  "questions": [
+   {
+    "q": "What attendance gain was reported?",
+    "answer_regex": "2\\.1"
+   },
+   {
+    "q": "What happened to test scores?",
+    "answer_regex": "no (significant )?(change|difference|effect)|did not change|0\\.4"
+   },
+   {
+    "q": "What did later starts cost in transportation?",
+    "answer_regex": "6\\.2\\s?%"
+   },
+   {
+    "q": "Does a reference list include all three authors, alphabetized?",
+    "answer_regex": "References[\\s\\S]*Brooks[\\s\\S]*Chen[\\s\\S]*Rivera"
+   },
+   {
+    "q": "Does it take a position?",
+    "answer_regex": "should (move|start|begin|delay|shift|adopt)|later (start|bell)"
+   }
+  ]
+ },
+ "proposal": {
+  "type": "proposal",
+  "preset": "report",
+  "sources": [
+   "inputs/proposal/notes.md",
+   "inputs/proposal/budget.csv"
+  ],
+  "questions": [
+   {
+    "q": "What amount is requested?",
+    "answer_regex": "\\$18,500"
+   },
+   {
+    "q": "What is the largest cost?",
+    "answer_regex": "van.{0,60}9,800|9,800.{0,60}van"
+   },
+   {
+    "q": "What is the launch date?",
+    "answer_regex": "April 3"
+   },
+   {
+    "q": "How many households were surveyed?",
+    "answer_regex": "212"
+   },
+   {
+    "q": "What is the first-year loan goal?",
+    "answer_regex": "400 (tool )?loans|400 loans"
+   }
+  ]
+ },
+ "readme": {
+  "type": "readme",
+  "preset": "report",
+  "sources": [
+   "inputs/readme/project/csvtrim.py",
+   "inputs/readme/project/test_csvtrim.py",
+   "inputs/readme/project/sample.csv"
+  ],
+  "questions": [
+   {
+    "q": "How do I run it?",
+    "answer_regex": "python3?\\s+csvtrim\\.py"
+   },
+   {
+    "q": "How do I keep empty rows?",
+    "answer_regex": "--keep-empty"
+   },
+   {
+    "q": "How do I change the delimiter?",
+    "answer_regex": "--delimiter"
+   },
+   {
+    "q": "Where does output go by default?",
+    "answer_regex": "stdout|standard output"
+   },
+   {
+    "q": "How do I run the tests?",
+    "answer_regex": "pytest|unittest"
+   }
+  ]
+ }
+}

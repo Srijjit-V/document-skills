@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>itsdangerous cram sheet</title>
+<style>
+@page { size: letter; margin: 0.4in; }
+:root { --ink:#111; --muted:#555; --rule:#bbb; --accent:#0b5cad; --warn:#a33; --box:#f6f7f9; }
+* { box-sizing: border-box; }
+body { font: 8.5pt/1.3 -apple-system, "Segoe UI", Helvetica, Arial, sans-serif; color: var(--ink);
+       background:#fff; margin: 0; }
+.sheet { max-width: 7.7in; margin: 0 auto; }
+header { display:flex; align-items: baseline; justify-content: space-between;
+         border-bottom: 2px solid var(--ink); margin-bottom: 4pt; }
+h1 { font-size: 15pt; margin: 0 0 2pt; }
+.meta { color: var(--muted); font-size: 8pt; }
+.one { background: var(--ink); color:#fff; padding: 4pt 6pt; margin: 0 0 3pt; font-size: 9.5pt; border-radius: 3pt; }
+.one strong { color: #ffd84d; }
+.legend { color: var(--muted); font-size: 8pt; margin: 0 0 5pt; }
+.cols { column-count: var(--cols); column-gap: 8pt; }
+section { break-inside: avoid; background: var(--box); border: 1px solid var(--rule);
+          border-radius: 3pt; padding: 3pt 5pt 4pt; margin: 0 0 6pt; }
+section.gotchas { border-color: var(--warn); background: #fff6f5; }
+h2 { font-size: 9.5pt; margin: 0 0 2pt; color: var(--accent); text-transform: uppercase; letter-spacing: .03em; }
+section.gotchas h2 { color: var(--warn); }
+h3 { font-size: 8.5pt; margin: 3pt 0 1pt; }
+p { margin: 1pt 0 2pt; }
+ul, ol { margin: 1pt 0 2pt; padding-left: 11pt; }
+li { margin: 0 0 1pt; }
+table { border-collapse: collapse; width: 100%; margin: 1pt 0 2pt; }
+th, td { text-align: left; vertical-align: top; padding: 1pt 3pt; border-bottom: 1px solid #ddd; }
+th { font-size: 8pt; color: var(--muted); font-weight: 600; }
+code { font: 8pt/1.25 ui-monospace, Menlo, Consolas, monospace; background:#e9ecf0; padding: 0 2pt; border-radius: 2pt; }
+pre { background:#e9ecf0; padding: 2pt 4pt; margin: 1pt 0 2pt; white-space: pre-wrap; border-radius: 2pt; }
+pre code { background: none; padding: 0; }
+a { color: var(--accent); text-decoration: none; }
+footer { color: var(--muted); font-size: 7.5pt; border-top: 1px solid var(--rule); margin-top: 2pt; padding-top: 2pt; }
+@media screen { body { background:#e5e5e5; } .sheet { background:#fff; padding: .4in; margin: 16px auto;
+  box-shadow: 0 1px 4px rgba(0,0,0,.2); } }
+@media screen and (max-width: 700px) { .cols { column-count: 1; } .sheet { padding: 16px; } }
+</style></head>
+<body><div class="sheet" style="--cols:3">
+<header><h1>itsdangerous cram sheet</h1><span class="meta">pallets/itsdangerous 2.3.0.dev @672971d · 2026-11-02</span></header>
+<p class="one"><strong>If you only read one thing:</strong> tokens are signed, not encrypted. Anyone can base64-decode the payload, so never put secrets in it.</p>
+<p class="legend">Legend: ★ most used · ⚠ gotcha</p>
+<div class="cols">
+<section><h2>Sign and verify ★</h2>
+<pre><code>from itsdangerous import (
+    URLSafeTimedSerializer)
+s = URLSafeTimedSerializer(
+    SECRET, salt=&quot;reset&quot;)
+tok = s.dumps({&quot;uid&quot;: 42})
+s.loads(tok, max_age=3600)
+# -&gt; {&#x27;uid&#x27;: 42}</code></pre>
+<p><code>loads</code> returns data only if the signature checks out. <code>dumps</code> returns <code>str</code>.</p></section>
+<section><h2>Pick a class</h2>
+<table><tr><th>Class</th><th>Use for</th></tr><tr><td><code>URLSafeTimedSerializer</code> ★</td><td>expiring URL tokens</td></tr><tr><td><code>URLSafeSerializer</code></td><td>URL tokens, no expiry</td></tr><tr><td><code>TimedSerializer</code></td><td>expiring, non-URL</td></tr><tr><td><code>Serializer</code></td><td>JSON + sig, no expiry</td></tr><tr><td><code>Signer</code></td><td>sign raw bytes</td></tr><tr><td><code>TimestampSigner</code></td><td>raw bytes + expiry</td></tr></table></section>
+<section><h2>Catch errors</h2>
+<pre><code>try:
+    data = s.loads(
+        tok, max_age=60)
+except SignatureExpired:
+    ...  # catch first
+except BadSignature:
+    ...  # tampered/key/salt</code></pre>
+<ul><li>All errors derive from <code>BadData</code></li><li><code>BadPayload</code>: sig OK, decode failed. ⚠ not a <code>BadSignature</code></li><li><code>e.payload</code>: the unverified bytes</li></ul></section>
+<section><h2>Secret key</h2>
+<ul><li><code>python3 -c 'import os; print(os.urandom(16).hex())'</code></li><li>Load from env, never commit; changing it kills all tokens</li><li>Rotate: pass <code>[old, new]</code> as the key: last signs, all verify</li></ul></section>
+<section><h2>Salt</h2>
+<ul><li>One salt per purpose: <code>"activate"</code> ≠ <code>"upgrade"</code></li><li>Not secret, only distinct; same id + same salt = reusable token</li><li>Defaults: serializer <code>itsdangerous</code>, signer <code>itsdangerous.Signer</code></li></ul></section>
+<section><h2>Upgrade digest, keep old tokens</h2>
+<pre><code>URLSafeTimedSerializer(SECRET,
+  signer_kwargs={
+    &quot;digest_method&quot;: sha512},
+  fallback_signers=[{
+    &quot;digest_method&quot;: sha1}])</code></pre>
+<p>SHA-1 is the default and safe inside HMAC. SHA-512 makes longer tokens.</p></section>
+<section><h2>Timestamps</h2>
+<ul><li><code>s.loads(tok, max_age=60, return_timestamp=True)</code> → <code>(data, datetime)</code></li><li><code>e.date_signed</code> on expiry: aware UTC <code>datetime</code></li><li><code>max_age</code> is in seconds</li></ul></section>
+<section class="gotchas"><h2>Gotchas</h2>
+<ul><li>⚠ <code>max_age</code> on non-Timed serializers is silently ignored, because <code>loads</code> swallows <code>**kwargs</code></li><li>⚠ Timed <code>loads</code> without <code>max_age</code> never expires</li><li>⚠ Future timestamp raises <code>SignatureExpired</code> (age &lt; 0)</li><li>⚠ <code>Signer.unsign</code> returns bytes even for str input</li><li>⚠ <code>sep</code> in <code>[A-Za-z0-9-_=]</code> raises <code>ValueError</code>: it collides with base64</li><li>⚠ Sets, datetimes: <code>TypeError</code>; pass <code>serializer_kwargs={"default": ...}</code></li><li>⚠ <code>loads_unsafe</code> skips verification; never with pickle</li></ul></section>
+<section><h2>Find it in the repo</h2>
+<ul><li><code>src/itsdangerous/signer.py</code>: HMAC, key derivation</li><li><code>timed.py</code>: timestamps, expiry checks</li><li><code>serializer.py</code>: dumps/loads, fallbacks</li><li><code>url_safe.py</code>: compact JSON, zlib, base64</li><li><code>tests/test_itsdangerous/</code>: one file per module</li></ul></section>
+<section><h2>Dev</h2>
+<table><tr><th>Command</th><th>Does</th></tr><tr><td><code>pip install -e . pytest freezegun</code></td><td>test deps</td></tr><tr><td><code>pytest -q</code></td><td>297 tests, warnings = errors</td></tr><tr><td><code>uv run --locked tox run -e typing</code></td><td>mypy + pyright [unverified]</td></tr></table></section>
+</div></div></body></html>

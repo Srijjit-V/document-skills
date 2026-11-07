@@ -1,0 +1,195 @@
+{
+ "itsdangerous/baseline/default": {
+  "pages": 6,
+  "body_pt": 11.2,
+  "min_pt": 8.0,
+  "pct_under_10pt": 54.3,
+  "chars_per_line": 72.6,
+  "leading": 1.12,
+  "pdf_score": 70,
+  "stranded": 0,
+  "md_score": 78,
+  "blank_line_spacing": 0,
+  "pdf_issues": [
+   "leading",
+   "small_text",
+   "text_near_edge"
+  ],
+  "retried": false
+ },
+ "itsdangerous/baseline/polished": {
+  "pages": 10,
+  "body_pt": 11.0,
+  "min_pt": 10.0,
+  "pct_under_10pt": 0.0,
+  "chars_per_line": 59.9,
+  "leading": 1.36,
+  "pdf_score": 100,
+  "stranded": 0,
+  "md_score": 78,
+  "blank_line_spacing": 0,
+  "pdf_issues": [],
+  "retried": false
+ },
+ "itsdangerous/skill-v2/default": {
+  "pages": 4,
+  "body_pt": 12.0,
+  "min_pt": 8.0,
+  "pct_under_10pt": 48.6,
+  "chars_per_line": 69.2,
+  "leading": 1.12,
+  "pdf_score": 70,
+  "stranded": 0,
+  "md_score": 100,
+  "blank_line_spacing": 0,
+  "pdf_issues": [
+   "leading",
+   "small_text",
+   "text_near_edge"
+  ],
+  "retried": false
+ },
+ "itsdangerous/skill-v2/polished": {
+  "pages": 5,
+  "body_pt": 11.0,
+  "min_pt": 10.0,
+  "pct_under_10pt": 0.0,
+  "chars_per_line": 62.2,
+  "leading": 1.36,
+  "pdf_score": 100,
+  "stranded": 0,
+  "md_score": 100,
+  "blank_line_spacing": 0,
+  "pdf_issues": [],
+  "retried": false
+ },
+ "httpie/baseline/default": {
+  "pages": 7,
+  "body_pt": 10.5,
+  "min_pt": 8.0,
+  "pct_under_10pt": 54.2,
+  "chars_per_line": 72.2,
+  "leading": 1.13,
+  "pdf_score": 40,
+  "stranded": 3,
+  "md_score": 83,
+  "blank_line_spacing": 0,
+  "pdf_issues": [
+   "leading",
+   "small_text",
+   "stranded_heading",
+   "text_near_edge"
+  ],
+  "retried": false
+ },
+ "httpie/baseline/polished": {
+  "pages": 14,
+  "body_pt": 11.0,
+  "min_pt": 10.0,
+  "pct_under_10pt": 0.0,
+  "chars_per_line": 52.7,
+  "leading": 1.36,
+  "pdf_score": 100,
+  "stranded": 0,
+  "md_score": 83,
+  "blank_line_spacing": 0,
+  "pdf_issues": [],
+  "retried": true
+ },
+ "httpie/skill-v2/default": {
+  "pages": 3,
+  "body_pt": 12.0,
+  "min_pt": 8.0,
+  "pct_under_10pt": 43.2,
+  "chars_per_line": 72.3,
+  "leading": 1.12,
+  "pdf_score": 70,
+  "stranded": 0,
+  "md_score": 100,
+  "blank_line_spacing": 0,
+  "pdf_issues": [
+   "leading",
+   "small_text",
+   "text_near_edge"
+  ],
+  "retried": false
+ },
+ "httpie/skill-v2/polished": {
+  "pages": 4,
+  "body_pt": 11.0,
+  "min_pt": 10.0,
+  "pct_under_10pt": 0.0,
+  "chars_per_line": 61.2,
+  "leading": 1.36,
+  "pdf_score": 100,
+  "stranded": 0,
+  "md_score": 100,
+  "blank_line_spacing": 0,
+  "pdf_issues": [],
+  "retried": false
+ },
+ "scrapy/baseline/default": {
+  "pages": 5,
+  "body_pt": 8.4,
+  "min_pt": 6.8,
+  "pct_under_10pt": 99.6,
+  "chars_per_line": 89.2,
+  "leading": 1.13,
+  "pdf_score": 40,
+  "stranded": 0,
+  "md_score": 91,
+  "blank_line_spacing": 0,
+  "pdf_issues": [
+   "body_size",
+   "leading",
+   "text_near_edge"
+  ],
+  "retried": false
+ },
+ "scrapy/baseline/polished": {
+  "pages": 11,
+  "body_pt": 11.0,
+  "min_pt": 10.0,
+  "pct_under_10pt": 0.0,
+  "chars_per_line": 62.7,
+  "leading": 1.36,
+  "pdf_score": 100,
+  "stranded": 0,
+  "md_score": 91,
+  "blank_line_spacing": 0,
+  "pdf_issues": [],
+  "retried": true
+ },
+ "scrapy/skill-v2/default": {
+  "pages": 3,
+  "body_pt": 12.0,
+  "min_pt": 8.0,
+  "pct_under_10pt": 51.3,
+  "chars_per_line": 71.1,
+  "leading": 1.12,
+  "pdf_score": 70,
+  "stranded": 0,
+  "md_score": 100,
+  "blank_line_spacing": 0,
+  "pdf_issues": [
+   "leading",
+   "small_text",
+   "text_near_edge"
+  ],
+  "retried": false
+ },
+ "scrapy/skill-v2/polished": {
+  "pages": 5,
+  "body_pt": 11.0,
+  "min_pt": 10.0,
+  "pct_under_10pt": 0.0,
+  "chars_per_line": 57.7,
+  "leading": 1.36,
+  "pdf_score": 100,
+  "stranded": 0,
+  "md_score": 100,
+  "blank_line_spacing": 0,
+  "pdf_issues": [],
+  "retried": false
+ }
+}

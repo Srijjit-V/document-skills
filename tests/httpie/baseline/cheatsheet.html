@@ -1,0 +1,174 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>HTTPie CLI Cheat Sheet</title>
+<style>
+  @page { size: 8.5in 11in; margin: 0.35in; }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; background: #fff; color: #1a1a1a; }
+  body { font: 7.4pt/1.28 -apple-system, "Segoe UI", Helvetica, Arial, sans-serif; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  .page { width: 7.8in; min-height: 10.3in; margin: 0 auto; }
+  @media screen { body { background: #e9e9e9; padding: 0.3in 0; } .page { background: #fff; padding: 0.35in; width: 8.5in; min-height: 11in; box-shadow: 0 1px 6px rgba(0,0,0,.2); } }
+  header { display: flex; justify-content: space-between; align-items: baseline; border-bottom: 2px solid #73dc8c; padding-bottom: 3px; margin-bottom: 5px; }
+  h1 { font-size: 15pt; margin: 0; letter-spacing: -0.3px; }
+  h1 span { color: #2f9e55; }
+  .syn { font-size: 8pt; }
+  .cols { column-count: 3; column-gap: 0.16in; }
+  section { break-inside: avoid; margin-bottom: 5px; }
+  h2 { font-size: 8.2pt; margin: 0 0 2px; padding: 1px 4px; background: #1f2937; color: #fff; border-radius: 2px; text-transform: uppercase; letter-spacing: .4px; }
+  table { width: 100%; border-collapse: collapse; }
+  td { padding: 1px 2px; vertical-align: top; border-bottom: 1px solid #ececec; }
+  td:first-child { width: 50%; padding-right: 4px; }
+  .exit td { width: auto !important; }
+  code { font: 6.9pt/1.25 ui-monospace, Menlo, Consolas, monospace; color: #0b5a2a; }
+  td:first-child code { color: #0b3d91; }
+  p { margin: 1px 0 2px; }
+  .note { color: #555; font-size: 6.8pt; }
+  .exit td:first-child { text-align: center; font-weight: 600; }
+  footer { margin-top: 4px; border-top: 1px solid #ccc; padding-top: 2px; font-size: 6.5pt; color: #666; display: flex; justify-content: space-between; }
+</style>
+</head>
+<body>
+<div class="page">
+<header>
+  <h1>HTTP<span>ie</span> CLI Cheat Sheet</h1>
+  <div class="syn"><code>http [flags] [METHOD] URL [ITEM …]</code> · v3.2.4 · also <code>https</code>, <code>httpie</code></div>
+</header>
+
+<div class="cols">
+
+<section><h2>Basics</h2><table>
+<tr><td><code>http pie.dev/get</code></td><td>GET (default when there's no body)</td></tr>
+<tr><td><code>http pie.dev/post a=1</code></td><td>POST JSON (data present → POST)</td></tr>
+<tr><td><code>http PUT pie.dev/put a=1</code></td><td>Explicit method</td></tr>
+<tr><td><code>http :3000/x</code></td><td>→ localhost:3000/x</td></tr>
+<tr><td><code>https example.org</code></td><td>https:// by default</td></tr>
+<tr><td><code>http --offline URL a=1</code></td><td>Print the request, don't send it</td></tr>
+</table></section>
+
+<section><h2>Request items</h2><table>
+<tr><td><code>H:v</code></td><td>Header</td></tr>
+<tr><td><code>H;</code> · <code>H:</code></td><td>Empty header · remove default header</td></tr>
+<tr><td><code>H:@file</code></td><td>Header value read from a file</td></tr>
+<tr><td><code>q==v</code> · <code>q==@f</code></td><td>Query param (value or file)</td></tr>
+<tr><td><code>k=v</code></td><td>String field</td></tr>
+<tr><td><code>k:=json</code></td><td>Raw JSON: <code>n:=1 ok:=true</code></td></tr>
+<tr><td><code>k=@f</code> · <code>k:=@f.json</code></td><td>Field read from a file (text / JSON)</td></tr>
+<tr><td><code>f@path;type=m</code></td><td>File upload (multipart)</td></tr>
+<tr><td><code>a[b][]=x a[c]:=1</code></td><td>Nested JSON</td></tr>
+<tr><td><code>@body.json</code></td><td>File contents as the body</td></tr>
+<tr><td><code>'a\==b'</code></td><td>Escape a separator</td></tr>
+</table></section>
+
+<section><h2>Request body</h2><table>
+<tr><td><code>-j</code> <span class="note">(default)</span></td><td>JSON object</td></tr>
+<tr><td><code>-f</code></td><td>Form (multipart if files)</td></tr>
+<tr><td><code>--multipart</code></td><td>Always multipart (<code>--boundary</code>)</td></tr>
+<tr><td><code>--raw 'txt'</code></td><td>Raw body string</td></tr>
+<tr><td><code>cmd | http POST URL</code></td><td>Body from stdin</td></tr>
+<tr><td><code>-x</code> · <code>-xx</code></td><td>Deflate · forced</td></tr>
+<tr><td><code>--chunked</code></td><td>Chunked encoding</td></tr>
+</table></section>
+
+<section><h2>Output</h2><table>
+<tr><td><code>-p HBhbm</code></td><td>Req <b>H</b>dr/<b>B</b>ody, resp <b>h</b>dr/<b>b</b>ody, <b>m</b>eta</td></tr>
+<tr><td><code>-h</code> · <code>-b</code> · <code>-m</code></td><td>Response headers · body · meta</td></tr>
+<tr><td><code>-v</code> · <code>-vv</code></td><td>Request + response (+meta)</td></tr>
+<tr><td><code>--all</code> · <code>-P WHAT</code></td><td>Show redirect hops / what to print for them</td></tr>
+<tr><td><code>-q</code> · <code>-qq</code></td><td>Quiet · also hide warnings</td></tr>
+<tr><td><code>-S</code></td><td>Stream by line (tail -f)</td></tr>
+<tr><td><code>-o FILE</code></td><td>Write output to a file</td></tr>
+</table>
+<p class="note">Defaults: <code>hb</code> on a TTY · <code>b</code> when piped · <code>HB</code> with --offline</p></section>
+
+<section><h2>Formatting</h2><table>
+<tr><td><code>--pretty=all</code></td><td>all · colors · format · none</td></tr>
+<tr><td><code>-s monokai</code></td><td>Color style (default auto)</td></tr>
+<tr><td><code>--unsorted</code></td><td>Don't sort keys/headers</td></tr>
+<tr><td><code>--format-options=</code></td><td><code>json.indent:2,xml.indent:4</code></td></tr>
+<tr><td><code>--response-mime=</code></td><td>Force formatter type</td></tr>
+<tr><td><code>--response-charset=</code></td><td>Force display encoding</td></tr>
+</table></section>
+
+<section><h2>Download</h2><table>
+<tr><td><code>http -d URL</code></td><td>Save to a file (name auto-detected)</td></tr>
+<tr><td><code>-d -o f.zip</code></td><td>Explicit filename</td></tr>
+<tr><td><code>-dco f.zip</code></td><td>Resume (needs <code>-o</code>)</td></tr>
+</table><p class="note"><code>-d</code> implies <code>-F</code>; progress bar on stderr.</p></section>
+
+<section><h2>Auth</h2><table>
+<tr><td><code>-a user:pass</code></td><td>Basic (<code>-a user</code> prompts)</td></tr>
+<tr><td><code>-A digest -a u:p</code></td><td>Digest</td></tr>
+<tr><td><code>-A bearer -a TOKEN</code></td><td>Bearer token</td></tr>
+<tr><td><code>--ignore-netrc</code></td><td>Skip ~/.netrc</td></tr>
+</table></section>
+
+<section><h2>Sessions</h2><table>
+<tr><td><code>--session=dev</code></td><td>Named session, per host (headers, cookies, auth)</td></tr>
+<tr><td><code>--session=./s.json</code></td><td>Session at an explicit path</td></tr>
+<tr><td><code>--session-read-only=dev</code></td><td>Use but don't save</td></tr>
+<tr><td><code>httpie cli sessions upgrade-all</code></td><td>Migrate format</td></tr>
+</table></section>
+
+<section><h2>Network / TLS</h2><table>
+<tr><td><code>-F</code></td><td>Follow redirects (max 30)</td></tr>
+<tr><td><code>--max-redirects=N</code></td><td>Redirect limit</td></tr>
+<tr><td><code>--timeout=5</code></td><td>Seconds</td></tr>
+<tr><td><code>--proxy=https:http://h:p</code></td><td>socks5 OK; env vars honored</td></tr>
+<tr><td><code>--verify=no|ca.pem</code></td><td>TLS verification</td></tr>
+<tr><td><code>--cert c.pem --cert-key k</code></td><td>Client certificate</td></tr>
+<tr><td><code>--ssl=tls1.2</code> · <code>--ciphers</code></td><td>TLS version · ciphers</td></tr>
+<tr><td><code>--path-as-is</code></td><td>Keep <code>/../</code> in the URL</td></tr>
+<tr><td><code>--default-scheme=https</code></td><td>Scheme when the URL has none</td></tr>
+<tr><td><code>--no-FLAG</code></td><td>Unset a default/config flag</td></tr>
+</table></section>
+
+<section><h2>Scripting &amp; exit codes</h2>
+<p><code>http -I --check-status --timeout=3 URL</code><br><span class="note"><code>-I</code> (ignore stdin) stops cron jobs and scripts from hanging</span></p>
+<table class="exit">
+<tr><td>0</td><td>OK</td><td>4</td><td>HTTP 4xx*</td></tr>
+<tr><td>1</td><td>Error</td><td>5</td><td>HTTP 5xx*</td></tr>
+<tr><td>2</td><td>Timeout</td><td>6</td><td>Too many redirects</td></tr>
+<tr><td>3</td><td>HTTP 3xx* (no -F)</td><td>7</td><td>Plugin error</td></tr>
+<tr><td colspan="2"><span class="note">* with --check-status</span></td><td>130</td><td>Ctrl-C</td></tr>
+</table></section>
+
+<section><h2>Config</h2>
+<p><code>$HTTPIE_CONFIG_DIR</code> → <code>%APPDATA%\httpie</code> → <code>~/.httpie</code> → <code>~/.config/httpie</code></p>
+<p><code>config.json</code>: <code>{"default_options": ["--style=fruity"], "plugins_dir": "…"}</code></p></section>
+
+<section><h2>Manager (httpie)</h2><table>
+<tr><td><code>httpie cli plugins install X</code></td><td>Also: list / upgrade / uninstall</td></tr>
+<tr><td><code>httpie cli check-updates</code></td><td>Check for a new version</td></tr>
+<tr><td><code>httpie cli export-args</code></td><td>Export the CLI spec as JSON</td></tr>
+</table></section>
+
+<section><h2>Developing the repo</h2><table>
+<tr><td><code>make all</code></td><td>venv + install + tests</td></tr>
+<tr><td><code>source venv/bin/activate</code></td><td>Use the dev <code>http</code></td></tr>
+<tr><td><code>make test</code> · <code>test-cover</code></td><td>pytest (· coverage)</td></tr>
+<tr><td><code>pytest tests/f.py::C::t</code></td><td>Run a single test</td></tr>
+<tr><td><code>make codestyle</code></td><td>flake8</td></tr>
+<tr><td><code>make test-all</code></td><td>+ dist + style</td></tr>
+<tr><td><code>http --debug …</code></td><td>Info for bug reports</td></tr>
+</table></section>
+
+<section><h2>Code map</h2><table>
+<tr><td><code>core.py</code></td><td>main → raw_main → program</td></tr>
+<tr><td><code>cli/definition.py</code></td><td>Every flag</td></tr>
+<tr><td><code>cli/argparser.py</code></td><td>Arg post-processing</td></tr>
+<tr><td><code>cli/requestitems.py</code></td><td>Item → request parts</td></tr>
+<tr><td><code>client.py</code></td><td>Build &amp; send requests</td></tr>
+<tr><td><code>output/</code></td><td>Writer, streams, formatters</td></tr>
+<tr><td><code>sessions.py</code> · <code>config.py</code></td><td>Persistence · config</td></tr>
+<tr><td><code>plugins/base.py</code></td><td>Plugin base classes</td></tr>
+<tr><td><code>tests/utils::http()</code></td><td>In-process CLI test helper</td></tr>
+</table></section>
+
+</div>
+<footer><span>Full manual: docs/README.md · httpie.io/docs/cli</span><span>Test API: pie.dev</span></footer>
+</div>
+</body>
+</html>

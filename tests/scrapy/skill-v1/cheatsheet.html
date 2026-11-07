@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Scrapy cram sheet</title>
+<style>
+@page { size: letter; margin: 0.4in; }
+:root { --ink:#111; --muted:#555; --rule:#bbb; --accent:#0b5cad; --warn:#a33; --box:#f6f7f9; }
+* { box-sizing: border-box; }
+body { font: 8.5pt/1.3 -apple-system, "Segoe UI", Helvetica, Arial, sans-serif; color: var(--ink);
+       background:#fff; margin: 0; }
+.sheet { max-width: 7.7in; margin: 0 auto; }
+header { display:flex; align-items: baseline; justify-content: space-between;
+         border-bottom: 2px solid var(--ink); margin-bottom: 4pt; }
+h1 { font-size: 15pt; margin: 0 0 2pt; }
+.meta { color: var(--muted); font-size: 8pt; }
+.one { background: var(--ink); color:#fff; padding: 4pt 6pt; margin: 0 0 3pt; font-size: 9.5pt; border-radius: 3pt; }
+.one strong { color: #ffd84d; }
+.legend { color: var(--muted); font-size: 8pt; margin: 0 0 5pt; }
+.cols { column-count: var(--cols); column-gap: 8pt; }
+section { break-inside: avoid; background: var(--box); border: 1px solid var(--rule);
+          border-radius: 3pt; padding: 3pt 5pt 4pt; margin: 0 0 6pt; }
+section.gotchas { border-color: var(--warn); background: #fff6f5; }
+h2 { font-size: 9.5pt; margin: 0 0 2pt; color: var(--accent); text-transform: uppercase; letter-spacing: .03em; }
+section.gotchas h2 { color: var(--warn); }
+h3 { font-size: 8.5pt; margin: 3pt 0 1pt; }
+p { margin: 1pt 0 2pt; }
+ul, ol { margin: 1pt 0 2pt; padding-left: 11pt; }
+li { margin: 0 0 1pt; }
+table { border-collapse: collapse; width: 100%; margin: 1pt 0 2pt; }
+th, td { text-align: left; vertical-align: top; padding: 1pt 3pt; border-bottom: 1px solid #ddd; }
+th { font-size: 8pt; color: var(--muted); font-weight: 600; }
+code { font: 8pt/1.25 ui-monospace, Menlo, Consolas, monospace; background:#e9ecf0; padding: 0 2pt; border-radius: 2pt; }
+pre { background:#e9ecf0; padding: 2pt 4pt; margin: 1pt 0 2pt; white-space: pre-wrap; border-radius: 2pt; }
+pre code { background: none; padding: 0; }
+a { color: var(--accent); text-decoration: none; }
+footer { color: var(--muted); font-size: 7.5pt; border-top: 1px solid var(--rule); margin-top: 2pt; padding-top: 2pt; }
+@media screen { body { background:#e5e5e5; } .sheet { background:#fff; padding: .4in; margin: 16px auto;
+  box-shadow: 0 1px 4px rgba(0,0,0,.2); } }
+@media screen and (max-width: 700px) { .cols { column-count: 1; } .sheet { padding: 16px; } }
+</style></head>
+<body><div class="sheet" style="--cols:3">
+<header><h1>Scrapy cram sheet</h1><span class="meta">scrapy@2.19.0 · Python 3.11+ · 2026-11-02</span></header>
+<p class="one"><strong>If you only read one thing:</strong> non-2xx responses and repeated URLs never reach your callback. Check HTTPERROR_ALLOWED_CODES and dont_filter before debugging selectors.</p>
+<p class="legend">Legend: ★ most used · ⚠ gotcha</p>
+<div class="cols">
+<section><h2>Daily commands</h2>
+<table><tr><th>Command</th><th>Does</th></tr><tr><td><code>scrapy crawl NAME -O out.jsonl</code> ★</td><td>run spider, overwrite output</td></tr><tr><td><code>scrapy shell URL</code> ★</td><td>console with <code>response</code> loaded</td></tr><tr><td><code>scrapy parse URL --spider NAME -c cb</code></td><td>run one callback on one URL</td></tr><tr><td><code>scrapy runspider file.py</code></td><td>run a spider without a project</td></tr><tr><td><code>scrapy genspider NAME DOMAIN</code></td><td>new spider from template</td></tr><tr><td><code>scrapy fetch --curl 'curl ...'</code></td><td>fetch a request given as curl</td></tr><tr><td><code>scrapy genrequest 'curl ...'</code></td><td>print Request code for curl</td></tr><tr><td><code>scrapy settings --get NAME</code></td><td>print a resolved setting</td></tr></table></section>
+<section><h2>Global flags</h2>
+<table><tr><th>Flag</th><th>Does</th></tr><tr><td><code>-s NAME=VALUE</code> ★</td><td>override a setting (priority 40)</td></tr><tr><td><code>-a NAME=VALUE</code></td><td>spider argument, becomes attribute</td></tr><tr><td><code>-o F</code> / <code>-O F</code></td><td>append / overwrite feed</td></tr><tr><td><code>-L INFO</code></td><td>log level (default <code>DEBUG</code>)</td></tr><tr><td><code>--pdb</code></td><td>debugger on logged exceptions</td></tr></table></section>
+<section><h2>Minimal spider</h2>
+<pre><code>class QSpider(scrapy.Spider):
+  name = &quot;q&quot;
+  start_urls = [
+   &quot;https://quotes.toscrape.com&quot;]
+
+  def parse(self, resp):
+    for q in resp.css(&quot;.quote&quot;):
+      yield {&quot;t&quot;: q.css(
+        &quot;.text::text&quot;).get()}
+    yield from resp.follow_all(
+      css=&quot;li.next a&quot;,
+      callback=self.parse)</code></pre>
+<ul><li>Yield dict → pipelines/feeds; yield <code>Request</code> → scheduler</li><li>Custom first requests: <code>async def start(self)</code> (2.13+)</li></ul></section>
+<section><h2>Selectors (on <code>response</code>)</h2>
+<ul><li><code>.css("h1::text").get()</code> → first str or <code>None</code></li><li><code>.css("a::attr(href)").getall()</code> → list</li><li><code>.xpath("//a/@href").get()</code> → XPath form</li><li><code>.follow(href, callback=cb)</code> → <code>Request</code>, relative URL ok</li></ul></section>
+<section><h2>Settings that matter</h2>
+<p>Built-in default → <code>startproject</code> template value:</p>
+<ul><li><code>ROBOTSTXT_OBEY</code> False → True</li><li><code>CONCURRENT_REQUESTS_PER_DOMAIN</code> 8 → 1</li><li><code>DOWNLOAD_DELAY</code> 0 → 1</li><li><code>RETRY_TIMES</code> 2 (3 attempts), <code>DOWNLOAD_TIMEOUT</code> 180 s</li><li>Priority: default 0 &lt; command 10 &lt; addon 15 &lt; project 20 &lt; spider 30 &lt; cmdline 40</li></ul></section>
+<section class="gotchas"><h2>Gotchas</h2>
+<ul><li>⚠ 404/500 dropped by <code>HttpErrorMiddleware</code>. Use <code>meta={"handle_httpstatus_list": [404]}</code>.</li><li>⚠ Duplicate URLs silently filtered. <code>dont_filter=True</code> to revisit.</li><li>⚠ <code>allowed_domains</code> wants <code>"example.com"</code>, not a URL.</li><li>⚠ <code>-o x.json</code> twice = two arrays, invalid JSON. Use <code>-O</code> or <code>.jsonl</code>.</li><li>⚠ <code>runspider</code> outside a project uses built-in defaults: no robots.txt, 8 req/domain.</li></ul></section>
+<section><h2>Find it in the repo</h2>
+<ul><li><code>scrapy/core/engine.py</code> crawl loop</li><li><code>scrapy/core/scheduler.py</code> queue, dupefilter</li><li><code>scrapy/settings/</code> defaults in <code>default_settings.py</code></li><li><code>scrapy/commands/</code> one file per command</li><li><code>tests/mockserver/</code> server the tests crawl</li></ul></section>
+<section><h2>Run from a script</h2>
+<pre><code>from scrapy.crawler import (
+  AsyncCrawlerProcess)
+p = AsyncCrawlerProcess({
+  &quot;FEEDS&quot;: {&quot;out.json&quot;:
+    {&quot;format&quot;: &quot;json&quot;}}})
+p.crawl(QSpider)
+p.start()  # blocks until done</code></pre></section>
+<section><h2>Enable a pipeline</h2>
+<pre><code>ITEM_PIPELINES = {
+  &quot;proj.pipelines.Clean&quot;: 300}</code></pre>
+<ul><li>Lower number runs first; keep to 0–1000</li><li>Same dict shape for <code>DOWNLOADER_MIDDLEWARES</code>, <code>SPIDER_MIDDLEWARES</code></li></ul></section>
+<section><h2>Contribute</h2>
+<pre><code>pre-commit run --all-files
+tox -e mypy &amp;&amp; tox -e pylint
+tox -e py -- tests/test_foo.py</code></pre></section>
+</div></div></body></html>

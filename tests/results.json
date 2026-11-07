@@ -1,0 +1,368 @@
+{
+ "itsdangerous/baseline/docs": {
+  "words": 1836,
+  "lint": 61,
+  "headers": 20,
+  "bullets": 29,
+  "bold": 26,
+  "answered": "4/5",
+  "median_words_to_answer": 194,
+  "positions": [
+   null,
+   149,
+   194,
+   52,
+   1471
+  ],
+  "issues": [
+   "bold",
+   "em_dash",
+   "filler",
+   "header_density"
+  ]
+ },
+ "itsdangerous/baseline/cheatsheet": {
+  "words": 395,
+  "lint": 96,
+  "headers": 10,
+  "bullets": 5,
+  "bold": 2,
+  "answered": "3/5",
+  "median_words_to_answer": 104,
+  "positions": [
+   null,
+   104,
+   104,
+   null,
+   429
+  ],
+  "issues": [
+   "em_dash"
+  ],
+  "pdf_pages": 1
+ },
+ "itsdangerous/skill-v1/docs": {
+  "words": 834,
+  "lint": 100,
+  "headers": 8,
+  "bullets": 6,
+  "bold": 2,
+  "answered": "4/5",
+  "median_words_to_answer": 92,
+  "positions": [
+   null,
+   92,
+   92,
+   38,
+   803
+  ],
+  "issues": []
+ },
+ "itsdangerous/skill-v1/cheatsheet": {
+  "words": 358,
+  "lint": 100,
+  "headers": 11,
+  "bullets": 24,
+  "bold": 1,
+  "answered": "4/5",
+  "median_words_to_answer": 61,
+  "positions": [
+   null,
+   61,
+   61,
+   20,
+   401
+  ],
+  "issues": [],
+  "pdf_pages": 1
+ },
+ "itsdangerous/skill-v2/docs": {
+  "words": 1000,
+  "lint": 100,
+  "headers": 8,
+  "bullets": 9,
+  "bold": 0,
+  "answered": "5/5",
+  "median_words_to_answer": 76,
+  "positions": [
+   49,
+   76,
+   204,
+   35,
+   127
+  ],
+  "issues": []
+ },
+ "itsdangerous/skill-v2/cheatsheet": {
+  "words": 397,
+  "lint": 100,
+  "headers": 11,
+  "bullets": 25,
+  "bold": 1,
+  "answered": "5/5",
+  "median_words_to_answer": 64,
+  "positions": [
+   64,
+   59,
+   88,
+   19,
+   374
+  ],
+  "issues": [],
+  "pdf_pages": 1
+ },
+ "httpie/baseline/docs": {
+  "words": 2544,
+  "lint": 78,
+  "headers": 29,
+  "bullets": 30,
+  "bold": 14,
+  "answered": "4/5",
+  "median_words_to_answer": 998,
+  "positions": [
+   null,
+   232,
+   985,
+   998,
+   1894
+  ],
+  "issues": [
+   "em_dash",
+   "header_density"
+  ]
+ },
+ "httpie/baseline/cheatsheet": {
+  "words": 580,
+  "lint": 100,
+  "headers": 13,
+  "bullets": 0,
+  "bold": 6,
+  "answered": "4/5",
+  "median_words_to_answer": 424,
+  "positions": [
+   null,
+   147,
+   411,
+   424,
+   661
+  ],
+  "issues": [],
+  "pdf_pages": 1
+ },
+ "httpie/skill-v1/docs": {
+  "words": 811,
+  "lint": 100,
+  "headers": 6,
+  "bullets": 6,
+  "bold": 0,
+  "answered": "4/5",
+  "median_words_to_answer": 411,
+  "positions": [
+   null,
+   99,
+   441,
+   411,
+   148
+  ],
+  "issues": []
+ },
+ "httpie/skill-v1/cheatsheet": {
+  "words": 426,
+  "lint": 100,
+  "headers": 10,
+  "bullets": 22,
+  "bold": 1,
+  "answered": "4/5",
+  "median_words_to_answer": 345,
+  "positions": [
+   null,
+   67,
+   479,
+   239,
+   345
+  ],
+  "issues": [],
+  "pdf_pages": 1
+ },
+ "httpie/skill-v2/docs": {
+  "words": 993,
+  "lint": 100,
+  "headers": 7,
+  "bullets": 10,
+  "bold": 0,
+  "answered": "4/5",
+  "median_words_to_answer": 224,
+  "positions": [
+   110,
+   69,
+   488,
+   null,
+   224
+  ],
+  "issues": []
+ },
+ "httpie/skill-v2/cheatsheet": {
+  "words": 385,
+  "lint": 100,
+  "headers": 11,
+  "bullets": 6,
+  "bold": 1,
+  "answered": "5/5",
+  "median_words_to_answer": 262,
+  "positions": [
+   45,
+   108,
+   307,
+   262,
+   375
+  ],
+  "issues": [],
+  "pdf_pages": 1
+ },
+ "scrapy/baseline/docs": {
+  "words": 2117,
+  "lint": 75,
+  "headers": 20,
+  "bullets": 29,
+  "bold": 11,
+  "answered": "5/5",
+  "median_words_to_answer": 313,
+  "positions": [
+   179,
+   693,
+   313,
+   258,
+   1575
+  ],
+  "issues": [
+   "em_dash",
+   "header_density"
+  ]
+ },
+ "scrapy/baseline/cheatsheet": {
+  "words": 459,
+  "lint": 100,
+  "headers": 10,
+  "bullets": 0,
+  "bold": 4,
+  "answered": "5/5",
+  "median_words_to_answer": 149,
+  "positions": [
+   19,
+   31,
+   149,
+   306,
+   450
+  ],
+  "issues": [],
+  "pdf_pages": 1
+ },
+ "scrapy/skill-v1/docs": {
+  "words": 895,
+  "lint": 100,
+  "headers": 8,
+  "bullets": 10,
+  "bold": 0,
+  "answered": "5/5",
+  "median_words_to_answer": 243,
+  "positions": [
+   204,
+   264,
+   243,
+   636,
+   165
+  ],
+  "issues": []
+ },
+ "scrapy/skill-v1/cheatsheet": {
+  "words": 429,
+  "lint": 100,
+  "headers": 11,
+  "bullets": 23,
+  "bold": 1,
+  "answered": "4/5",
+  "median_words_to_answer": 296,
+  "positions": [
+   null,
+   52,
+   228,
+   296,
+   479
+  ],
+  "issues": [],
+  "pdf_pages": 1
+ },
+ "scrapy/skill-v2/docs": {
+  "words": 955,
+  "lint": 100,
+  "headers": 8,
+  "bullets": 11,
+  "bold": 0,
+  "answered": "5/5",
+  "median_words_to_answer": 149,
+  "positions": [
+   130,
+   149,
+   71,
+   237,
+   611
+  ],
+  "issues": []
+ },
+ "scrapy/skill-v2/cheatsheet": {
+  "words": 426,
+  "lint": 100,
+  "headers": 10,
+  "bullets": 8,
+  "bold": 1,
+  "answered": "5/5",
+  "median_words_to_answer": 105,
+  "positions": [
+   51,
+   60,
+   105,
+   298,
+   450
+  ],
+  "issues": [],
+  "pdf_pages": 1
+ },
+ "click/baseline/docs": null,
+ "click/baseline/cheatsheet": {
+  "words": 693,
+  "lint": 100,
+  "headers": 12,
+  "bullets": 5,
+  "bold": 0,
+  "answered": "5/5",
+  "median_words_to_answer": 176,
+  "positions": [
+   20,
+   52,
+   588,
+   176,
+   373
+  ],
+  "issues": [],
+  "pdf_pages": 1
+ },
+ "click/skill-v3/docs": null,
+ "click/skill-v3/cheatsheet": {
+  "words": 534,
+  "lint": 100,
+  "headers": 12,
+  "bullets": 47,
+  "bold": 1,
+  "answered": "5/5",
+  "median_words_to_answer": 198,
+  "positions": [
+   65,
+   257,
+   376,
+   135,
+   198
+  ],
+  "issues": [],
+  "pdf_pages": 1
+ }
+}

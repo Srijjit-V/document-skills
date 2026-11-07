@@ -1,0 +1,6 @@
+__pycache__/
+*.pyc
+.DS_Store
+.env
+# working briefs, not part of the skills
+documentation-skill-prompt*.md

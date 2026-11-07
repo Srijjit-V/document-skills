@@ -1,0 +1,8 @@
+PHYS 101 lab, Oct 9 2026. partners: Dev and me. Instructor: Dr. Alvarez.
+goal: measure g with a simple pendulum.
+setup: string + metal bob, clamp on a stand. length measured from pivot to center of bob with a meter stick, readings good to about +/- 0.5 cm.
+each trial = time for 10 full oscillations, stopwatch on a phone. 3 trials per length, 5 lengths (data.csv, times in seconds are for the 10 oscillations).
+released from about 10 degrees each time, small angle.
+accepted g we were told to compare to: 9.81 m/s^2.
+problems: stopwatch start/stop reaction time maybe 0.2 s. at the 0.20 m length the bob hit the stand once and we redid that trial. string stretched a tiny bit? not sure.
+formula given in the lab handout: T = 2*pi*sqrt(L/g), so g = 4*pi^2*L / T^2.

@@ -1,0 +1,90 @@
+{
+ "itsdangerous": [
+  {
+   "q": "How do I install it?",
+   "answer_regex": "pip install (-U )?itsdangerous"
+  },
+  {
+   "q": "How do I verify and load a signed value?",
+   "answer_regex": "\\.(loads|unsign)\\("
+  },
+  {
+   "q": "How do I make a token expire?",
+   "answer_regex": "max_age"
+  },
+  {
+   "q": "Is the payload encrypted, can users read it?",
+   "answer_regex": "not encrypt|isn.t encrypt|no encryption|not (secret|hidden|private)|can (be )?(read|decod)|readable by"
+  },
+  {
+   "q": "How do I run the test suite?",
+   "answer_regex": "\\b(pytest|tox)\\b"
+  }
+ ],
+ "httpie": [
+  {
+   "q": "How do I install it?",
+   "answer_regex": "(pip|pipx|brew) install httpie"
+  },
+  {
+   "q": "How do I send a JSON number/bool/array, not a string?",
+   "answer_regex": ":="
+  },
+  {
+   "q": "How do I download a file?",
+   "answer_regex": "--download|`-d[ `]"
+  },
+  {
+   "q": "How do I send basic auth credentials?",
+   "answer_regex": "(-a |--auth[ =])"
+  },
+  {
+   "q": "How do I run the test suite?",
+   "answer_regex": "make test|\\bpytest\\b"
+  }
+ ],
+ "scrapy": [
+  {
+   "q": "How do I create a new project?",
+   "answer_regex": "scrapy startproject"
+  },
+  {
+   "q": "How do I run a spider and save the items to a file?",
+   "answer_regex": "scrapy crawl \\S+ .*(-O|-o) "
+  },
+  {
+   "q": "How do I extract data from a page?",
+   "answer_regex": "\\.(css|xpath)\\([\"']"
+  },
+  {
+   "q": "Does Scrapy obey robots.txt by default?",
+   "answer_regex": "ROBOTSTXT_OBEY"
+  },
+  {
+   "q": "How do I run the test suite?",
+   "answer_regex": "\\btox\\b|\\bpytest\\b"
+  }
+ ],
+ "click": [
+  {
+   "q": "How do I add an option to a command?",
+   "answer_regex": "@click\\.option\\("
+  },
+  {
+   "q": "How do I make subcommands?",
+   "answer_regex": "@click\\.group\\("
+  },
+  {
+   "q": "How do I test my CLI?",
+   "answer_regex": "CliRunner"
+  },
+  {
+   "q": "How do I fill an option from an environment variable?",
+   "answer_regex": "envvar|auto_envvar_prefix"
+  },
+  {
+   "q": "How do I accept a file or path argument?",
+   "answer_regex": "click\\.(File|Path)\\("
+  }
+ ]
+}
